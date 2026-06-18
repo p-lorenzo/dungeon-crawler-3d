@@ -1,3 +1,13 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Ralph Wiggum
+logs/*
+!logs/.gitkeep
+PROMPT_build.md
+PROMPT_plan.md
+.circuit_breaker_state
+.response_analysis
+completion_log/*.png
+!completion_log/.gitkeep
