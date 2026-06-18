@@ -2,7 +2,8 @@
 #
 # Ralph Wiggum Spec Queue Helpers
 #
-# Lightweight helpers for the root-level numbered specs.
+# Adapted for SpecKit directory structure: specs/NNN-name/spec.md
+# (Original Ralph Wiggum expects flat specs/NNN-name.md)
 #
 # Spec status convention:
 #   A spec is COMPLETE if it contains one of these lines (at the start of a line):
@@ -13,8 +14,8 @@
 #   Any other status (Draft, TODO, In Progress, or missing) means INCOMPLETE.
 #
 # Spec priority:
-#   Lower number = higher priority. Files are sorted lexicographically,
-#   so 001-foo.md is picked before 100-bar.md.
+#   Lower number = higher priority. Directories are sorted lexicographically,
+#   so 001-foo/ is picked before 100-bar/.
 #
 
 get_root_specs() {
@@ -24,7 +25,8 @@ get_root_specs() {
         return 0
     fi
 
-    find "$specs_dir" -maxdepth 1 -type f -name "*.md" | sort
+    # Speckit structure: specs/NNN-name/spec.md
+    find "$specs_dir" -maxdepth 2 -type f -name "spec.md" | sort
 }
 
 is_root_spec_complete() {
