@@ -42,4 +42,8 @@ extends Resource
 @export_category("Props")
 @export var global_prop_limits: Dictionary = {} # String (category) -> int (limit)
 
+@export_category("Tile Injection")
+@export var injected_tiles: Array[TileInjectionRule] = []
+
+
 

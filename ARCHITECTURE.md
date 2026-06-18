@@ -32,8 +32,10 @@ All placement logic operates in memory before interacting with the `SceneTree`.
 - **Path Validation (`PathValidator`):** Verifies that a valid, traversable path exists from the Start node to the Boss/Exit node, discarding invalid topologies.
 - **Lock & Key Assignment (`KeyLockManager`):** Analyzes the layout graph, identifies locked doors, traces predecessor rooms back to the entrance using BFS/DFS, and allocates keys to valid container rooms dynamically to avoid soft-locks.
 - **Prop Randomizer (`DungeonPropManager`):** Evaluates weights and select categories of props dynamically using seed-based RNG, normalizing weights under uniform fallbacks, and clamping totals against global configuration limits.
+- **Tile Injection System:** Prioritizes placing unique rooms (such as quest pedestals, merchant shops, or boss rooms) at designated depth percentages along the main path or branch paths, ensuring required injected tiles are successfully placed via seed retries.
 
 ### 2.2. Godot Representation and Integration
+
 
 - **DungeonGenerator3D:** A custom `Node3D` exposed in the Godot editor (`@tool` enabled) that serves as the generation pipeline coordinator, providing action buttons to build and clear layout previews.
 - **RoomConnector3D:** A custom `Node3D` placed inside room scenes to define entry/exit ports. It manages:
@@ -78,7 +80,8 @@ dungeon-crawler-3d/
 │       │   └── dungeon_navmesh_adapter_3d.gd # Automatic NavMesh bakes post-generation
 │       ├── resources/                      # Custom Resources
 │       │   ├── room_data.gd                # Individual room scenes and weights
-│       │   └── dungeon_config.gd           # Global parameters (rooms count, seed, pools, limits)
+│       │   ├── tile_injection_rule.gd      # Rules defining topological unique room placement constraints
+│       │   └── dungeon_config.gd           # Global parameters (rooms count, seed, pools, limits, injected tiles)
 │       ├── plugin.cfg                      # Godot plugin metadata
 │       └── dungeon_crawler_3d.gd           # EditorPlugin script (setup and teardown)
 ├── demo/                                   # Test scenes, assets, and integration test scripts
@@ -87,6 +90,7 @@ dungeon-crawler-3d/
 │   ├── test_navmesh_baking.gd              # NavMesh baking test suite
 │   ├── test_prop_randomizer.gd            # Prop randomizer test suite
 │   ├── test_lock_key.gd                   # Lock & key puzzle validation test suite
+│   ├── test_tile_injection.gd             # Tile injection validation test suite
 │   └── demo_config.tres                    # Default designer config
 └── project.godot
 ```

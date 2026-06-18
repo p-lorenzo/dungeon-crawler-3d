@@ -64,30 +64,51 @@ func generate() -> void:
 	if min_rooms_for_topology < config.room_count_min:
 		generation_note.emit("Topology may fall short of room_count_min (%d); minimum rooms for topology: %d" % [config.room_count_min, min_rooms_for_topology])
 
-	var builder: DungeonBuilder = DungeonBuilder.new()
-	var graph: DungeonGraph = builder.build(config)
+	var builder: DungeonBuilder
+	var graph: DungeonGraph
+	var validator: PathValidator = PathValidator.new()
+	var attempts: int = 0
+	var max_attempts: int = config.max_generation_attempts
+	var current_seed: int = config.random_seed
+	var rng_for_seeds: RandomNumberGenerator = RandomNumberGenerator.new()
+	if current_seed != 0:
+		rng_for_seeds.seed = current_seed
+	else:
+		rng_for_seeds.randomize()
+
+	var temp_config: DungeonConfig = config.duplicate() as DungeonConfig
+
+	while attempts < max_attempts:
+		if attempts > 0:
+			temp_config.random_seed = rng_for_seeds.randi()
+			if temp_config.random_seed == 0:
+				temp_config.random_seed = 1
+
+		builder = DungeonBuilder.new()
+		graph = builder.build(temp_config)
+		if not graph.placements.is_empty() and validator.validate_path(graph):
+			break
+		attempts += 1
+
 	active_graph = graph
 
-	if graph.placements.is_empty():
+
+	if graph.placements.is_empty() or not validator.validate_path(graph):
 		var reason: String = builder.failure_reason
 		if reason.is_empty():
-			reason = "Failed to generate dungeon layout"
+			reason = "Failed to generate dungeon layout after %d attempts" % max_attempts
 		generation_failed.emit(reason)
 		return
 
-	var validator: PathValidator = PathValidator.new()
-	if not validator.validate_path(graph):
-		generation_failed.emit(builder.failure_reason)
-		return
-
 	_generate_dungeon_root()
-	var prop_manager := DungeonPropManager.new(config, builder.rng)
+	var prop_manager := DungeonPropManager.new(temp_config, builder.rng)
 	_instantiate_rooms(graph, prop_manager)
 
 	if not builder.partial_success_note.is_empty():
 		generation_note.emit(builder.partial_success_note)
 
 	generation_completed.emit(_dungeon_root)
+
 
 
 func clear() -> void:

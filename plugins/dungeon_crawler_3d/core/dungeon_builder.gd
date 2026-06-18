@@ -16,6 +16,9 @@ var failure_reason: String = ""
 var partial_success_note: String = ""
 var branches_placed: int = 0
 var branches_requested: int = 0
+var _active_injection_rules: Array[TileInjectionRule] = []
+var _placed_injection_rules: Array[TileInjectionRule] = []
+
 
 
 func build(config: DungeonConfig) -> DungeonGraph:
@@ -32,6 +35,12 @@ func build(config: DungeonConfig) -> DungeonGraph:
 	partial_success_note = ""
 	branches_placed = 0
 	branches_requested = 0
+	_active_injection_rules.clear()
+	_placed_injection_rules.clear()
+	for rule in _config.injected_tiles:
+		if rule:
+			_active_injection_rules.append(rule)
+
 
 	if _config.random_seed != 0:
 		_rng.seed = _config.random_seed
@@ -75,6 +84,18 @@ func build(config: DungeonConfig) -> DungeonGraph:
 		failure_reason = "Generated dungeon has no valid entrance-to-boss path"
 		return _graph
 
+	# Verify that all is_required rules have been placed
+	for rule in _config.injected_tiles:
+		if rule and rule.is_required and not rule in _placed_injection_rules:
+			_selector.reset()
+			var path_str := "unknown"
+			if rule.room_data and rule.room_data.room_scene:
+				path_str = rule.room_data.room_scene.resource_path
+			failure_reason = "Failed to place required injected tile: %s" % path_str
+			_graph.clear()
+			return _graph
+
+
 	var manager: KeyLockManager = KeyLockManager.new()
 	manager.populate_cache(_config)
 	var assignments: Dictionary = manager.allocate_keys(_graph)
@@ -114,23 +135,51 @@ func _build_main_path() -> bool:
 	print("  boss_pool size: ", _config.boss_pool.size())
 	print("  max_generation_attempts: ", _config.max_generation_attempts)
 
-	var entrance_data: RoomData = _selector.select_weighted(_config.entrance_pool, _rng)
-	if not entrance_data or not entrance_data.room_scene:
-		print("  FAIL: no entrance data or scene")
-		return false
+	var entrance_data: RoomData = null
+	var matching_rules: Array[TileInjectionRule] = _get_matching_rules(0.0, TileInjectionRule.PlacementTarget.MAIN_PATH)
+	var matched_rule: TileInjectionRule = null
 
-	var entrance_placement: Dictionary = {
-		room_data = entrance_data,
-		world_transform = Transform3D.IDENTITY,
-		category = RoomData.RoomCategory.ENTRANCE,
-		parent_index = -1,
-		connector_used = -1
-	}
 
-	if not _place_room(entrance_placement):
-		return false
+	for rule in matching_rules:
+		var candidate: RoomData = rule.room_data
+		if not candidate or not candidate.room_scene:
+			continue
 
-	_graph.add_placement(entrance_placement)
+		var entrance_placement: Dictionary = {
+			room_data = candidate,
+			world_transform = Transform3D.IDENTITY,
+			category = RoomData.RoomCategory.ENTRANCE,
+			parent_index = -1,
+			connector_used = -1
+		}
+
+		if _place_room(entrance_placement):
+			entrance_data = candidate
+			matched_rule = rule
+			_graph.add_placement(entrance_placement)
+			_active_injection_rules.erase(rule)
+			_placed_injection_rules.append(rule)
+			break
+
+	if not entrance_data:
+		entrance_data = _selector.select_weighted(_config.entrance_pool, _rng)
+		if not entrance_data or not entrance_data.room_scene:
+			print("  FAIL: no entrance data or scene")
+			return false
+
+		var entrance_placement: Dictionary = {
+			room_data = entrance_data,
+			world_transform = Transform3D.IDENTITY,
+			category = RoomData.RoomCategory.ENTRANCE,
+			parent_index = -1,
+			connector_used = -1
+		}
+
+		if not _place_room(entrance_placement):
+			return false
+
+		_graph.add_placement(entrance_placement)
+
 
 	var success: bool = _place_path_node_recursive(1)
 	if not success:
@@ -171,8 +220,67 @@ func _place_path_node_recursive(depth: int) -> bool:
 		print("  Recursion depth %d: Empty connector type on room %d" % [depth, prev_idx])
 		return false
 
+	var p: float = float(depth) / (target_length - 1) if target_length > 1 else 0.0
+	var matching_rules: Array[TileInjectionRule] = _get_matching_rules(p, TileInjectionRule.PlacementTarget.MAIN_PATH)
+
+
+	# Try injection rules first
+	for rule in matching_rules:
+		var candidate: RoomData = rule.room_data
+		if not candidate or not candidate.room_scene:
+			continue
+
+		var match_idx: int = _matcher.find_matching_connector(candidate.room_scene, forward_type)
+		if match_idx < 0:
+			continue
+
+		var prev_connector_world: Transform3D = _get_connector_world_transform(prev_placement, forward_connector_idx)
+		var candidate_connector_local: Transform3D = _get_connector_local_transform(candidate.room_scene, match_idx)
+
+		var world_transform: Transform3D = _matcher.compute_alignment_transform(prev_connector_world, candidate_connector_local)
+		var room_aabb: AABB = _compute_room_world_aabb(candidate.room_scene, world_transform)
+
+		if _aabb_manager.check_overlap(room_aabb, _placed_aabbs):
+			continue
+
+		var category: int = RoomData.RoomCategory.BOSS if is_last else candidate.category
+		var new_placement: Dictionary = {
+			room_data = candidate,
+			world_transform = world_transform,
+			category = category,
+			parent_index = prev_idx,
+			connector_used = match_idx
+		}
+
+		_placed_aabbs.append(room_aabb)
+		_graph.add_placement(new_placement)
+
+		var edge: Dictionary = {
+			room_a_index = prev_idx,
+			room_b_index = _graph.placements.size() - 1,
+			connector_a_local = _get_connector_local_transform(prev_placement.room_data.room_scene, forward_connector_idx),
+			connector_b_local = candidate_connector_local,
+			connection_type = forward_type
+		}
+		_graph.add_edge(edge)
+
+		_active_injection_rules.erase(rule)
+		_placed_injection_rules.append(rule)
+
+		# Recurse
+		if _place_path_node_recursive(depth + 1):
+			return true
+
+		# Backtrack
+		_placed_injection_rules.erase(rule)
+		_active_injection_rules.append(rule)
+		_graph.remove_last_placement()
+		_placed_aabbs.pop_back()
+		_graph.remove_last_edge()
+
 	var working_pool: Array[RoomData] = pool.duplicate()
 	var attempts: int = 0
+
 
 	while not working_pool.is_empty() and attempts < _config.max_generation_attempts:
 		attempts += 1
@@ -309,8 +417,68 @@ func _place_branch_node_recursive(current_parent_idx: int, branch_placement_indi
 	if forward_type.is_empty():
 		return false
 
+	var p: float = float(step) / (depth - 1) if depth > 1 else 0.0
+	var matching_rules: Array[TileInjectionRule] = _get_matching_rules(p, TileInjectionRule.PlacementTarget.BRANCH)
+
+
+	# Try injection rules first
+	for rule in matching_rules:
+		var candidate: RoomData = rule.room_data
+		if not candidate or not candidate.room_scene:
+			continue
+
+		var match_idx: int = _matcher.find_matching_connector(candidate.room_scene, forward_type)
+		if match_idx < 0:
+			continue
+
+		var prev_connector_world: Transform3D = _get_connector_world_transform(parent_placement, forward_connector_idx)
+		var candidate_connector_local: Transform3D = _get_connector_local_transform(candidate.room_scene, match_idx)
+
+		var world_transform: Transform3D = _matcher.compute_alignment_transform(prev_connector_world, candidate_connector_local)
+		var room_aabb: AABB = _compute_room_world_aabb(candidate.room_scene, world_transform)
+
+		if _aabb_manager.check_overlap(room_aabb, _placed_aabbs):
+			continue
+
+		var category: int = RoomData.RoomCategory.DEAD_END if is_last else candidate.category
+		var new_placement: Dictionary = {
+			room_data = candidate,
+			world_transform = world_transform,
+			category = category,
+			parent_index = current_parent_idx,
+			connector_used = match_idx
+		}
+
+		_placed_aabbs.append(room_aabb)
+		var new_room_idx: int = _graph.add_placement(new_placement)
+		branch_placement_indices.append(new_room_idx)
+
+		var edge: Dictionary = {
+			room_a_index = current_parent_idx,
+			room_b_index = new_room_idx,
+			connector_a_local = _get_connector_local_transform(parent_placement.room_data.room_scene, forward_connector_idx),
+			connector_b_local = candidate_connector_local,
+			connection_type = forward_type
+		}
+		_graph.add_edge(edge)
+
+		_active_injection_rules.erase(rule)
+		_placed_injection_rules.append(rule)
+
+		if _place_branch_node_recursive(new_room_idx, branch_placement_indices, step + 1, depth):
+			return true
+
+		# Backtrack
+		_placed_injection_rules.erase(rule)
+		_active_injection_rules.append(rule)
+		branch_placement_indices.pop_back()
+		_graph.remove_last_placement()
+		_placed_aabbs.pop_back()
+		_graph.remove_last_edge()
+
 	var working_pool: Array[RoomData] = pool.duplicate()
 	var attempts: int = 0
+
 
 	while not working_pool.is_empty() and attempts < _config.max_generation_attempts:
 		attempts += 1
@@ -453,3 +621,13 @@ func _get_aabb_corners(aabb: AABB) -> Array[Vector3]:
 func _validate_final_path() -> bool:
 	var validator: PathValidator = PathValidator.new()
 	return validator.validate_path(_graph)
+
+
+func _get_matching_rules(p: float, target: int) -> Array[TileInjectionRule]:
+	var matches: Array[TileInjectionRule] = []
+	for rule in _active_injection_rules:
+		if rule.placement_target == target or rule.placement_target == TileInjectionRule.PlacementTarget.ANYWHERE:
+			if p >= rule.min_path_percentage and p <= rule.max_path_percentage:
+				matches.append(rule)
+	return matches
+
