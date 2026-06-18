@@ -59,6 +59,10 @@ func generate() -> void:
 	if not _validate_all_scenes():
 		return
 
+	var min_rooms_for_topology: int = config.main_path_length + config.branch_count * config.branch_depth_min
+	if min_rooms_for_topology < config.room_count_min:
+		generation_note.emit("Topology may fall short of room_count_min (%d); minimum rooms for topology: %d" % [config.room_count_min, min_rooms_for_topology])
+
 	var builder: DungeonBuilder = DungeonBuilder.new()
 	var graph: DungeonGraph = builder.build(config)
 

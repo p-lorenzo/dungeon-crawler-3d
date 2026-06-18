@@ -76,6 +76,11 @@ func build(config: DungeonConfig) -> DungeonGraph:
 	if branches_placed < branches_requested:
 		partial_success_note = "Placed %d of %d requested branches (limited by main path rooms)" % [branches_placed, branches_requested]
 
+	if _graph.total_rooms < _config.room_count_min:
+		if not partial_success_note.is_empty():
+			partial_success_note += "; "
+		partial_success_note += "Generated %d rooms, below room_count_min (%d)" % [_graph.total_rooms, _config.room_count_min]
+
 	_selector.reset()
 	return _graph
 
