@@ -8,18 +8,18 @@ signal generation_note(note: String)
 
 @export_category("Configuration")
 @export var config: DungeonConfig:
-	set(value):
+	set(value: DungeonConfig):
 		config = value
 
 @export_category("Actions")
 @export var _generate_button: bool:
-	set(value):
+	set(value: bool):
 		if value:
 			generate()
 			_generate_button = false
 
 @export var _clear_button: bool:
-	set(value):
+	set(value: bool):
 		if value:
 			clear()
 			_clear_button = false

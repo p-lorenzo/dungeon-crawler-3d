@@ -34,7 +34,7 @@ func _collect_aabb_recursive(node: Node) -> AABB:
 	return aabb
 
 
-func check_overlap(candidate: AABB, placed_aabbs: Array) -> bool:
+func check_overlap(candidate: AABB, placed_aabbs: Array[AABB]) -> bool:
 	for existing: AABB in placed_aabbs:
 		if candidate.intersects(existing):
 			return true
