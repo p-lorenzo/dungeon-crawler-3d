@@ -81,7 +81,8 @@ func generate() -> void:
 		return
 
 	_generate_dungeon_root()
-	_instantiate_rooms(graph)
+	var prop_manager := DungeonPropManager.new(config, builder.rng)
+	_instantiate_rooms(graph, prop_manager)
 
 	if not builder.partial_success_note.is_empty():
 		generation_note.emit(builder.partial_success_note)
@@ -117,7 +118,7 @@ func _generate_dungeon_root() -> void:
 		_dungeon_root.owner = get_tree().edited_scene_root
 
 
-func _instantiate_rooms(graph: DungeonGraph) -> void:
+func _instantiate_rooms(graph: DungeonGraph, prop_manager: DungeonPropManager) -> void:
 	for i: int in range(graph.placements.size()):
 		var placement: Dictionary = graph.placements[i]
 		var room_data: RoomData = placement.room_data
@@ -141,6 +142,21 @@ func _instantiate_rooms(graph: DungeonGraph) -> void:
 			var assignments: Array = graph.key_lock_assignments[i]
 			for assignment: KeyLockAssignment in assignments:
 				_spawn_key_item(room_instance, assignment)
+
+		# Hook for prop groups
+		if prop_manager:
+			for child in room_instance.find_children("*", "PropGroup3D", true, false):
+				var prop_group := child as PropGroup3D
+				if prop_group:
+					var selected_scene: PackedScene = prop_manager.evaluate_prop_group(prop_group)
+					if selected_scene:
+						var prop_instance: Node3D = selected_scene.instantiate() as Node3D
+						prop_group.add_child(prop_instance)
+						if Engine.is_editor_hint():
+							prop_instance.owner = get_tree().edited_scene_root
+					else:
+						# Clean up unspawned prop placeholder nodes
+						prop_group.queue_free()
 
 		_dungeon_root.add_child(room_instance)
 

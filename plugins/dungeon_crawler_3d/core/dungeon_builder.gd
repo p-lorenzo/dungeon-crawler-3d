@@ -7,6 +7,8 @@ var _aabb_manager: AABBManager
 var _matcher: ConnectorMatcher
 var _selector: RoomSelector
 var _rng: RandomNumberGenerator
+var rng: RandomNumberGenerator:
+	get: return _rng
 var _placed_aabbs: Array[AABB] = []
 var _attempts_at_position: int = 0
 var _branched_from: Array[int] = []

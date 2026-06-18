@@ -39,3 +39,7 @@ extends Resource
 @export var key_scenes: Dictionary = {} # String (key_id) -> PackedScene
 @export var locked_door_scenes: Dictionary = {} # String (key_id) -> PackedScene
 
+@export_category("Props")
+@export var global_prop_limits: Dictionary = {} # String (category) -> int (limit)
+
+
