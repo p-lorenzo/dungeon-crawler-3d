@@ -157,16 +157,20 @@ func _build_branches() -> bool:
 		if _graph.total_rooms >= room_count_max:
 			break
 
-		var attachment_idx: int = _rng.randi() % available_attachment_indices.size()
-		var main_room_idx: int = available_attachment_indices[attachment_idx]
-		available_attachment_indices.remove_at(attachment_idx)
-
 		var depth: int = _rng.randi_range(_config.branch_depth_min, _config.branch_depth_max)
 		var remaining: int = room_count_max - _graph.total_rooms
 		if depth > remaining:
 			depth = remaining
 
-		if not _build_single_branch(main_room_idx, depth):
+		var placement_success: bool = false
+		while not placement_success and not available_attachment_indices.is_empty():
+			var attachment_idx: int = _rng.randi() % available_attachment_indices.size()
+			var main_room_idx: int = available_attachment_indices[attachment_idx]
+			available_attachment_indices.remove_at(attachment_idx)
+
+			placement_success = _build_single_branch(main_room_idx, depth)
+
+		if not placement_success:
 			return false
 
 		branches_placed += 1

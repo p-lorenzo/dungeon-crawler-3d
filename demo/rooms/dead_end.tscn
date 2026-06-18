@@ -13,4 +13,4 @@ mesh = SubResource("box_deadend")
 [node name="EntryConnector" type="Node3D" parent="."]
 script = ExtResource("1_connector")
 connection_type = "standard_door"
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -1.5)
