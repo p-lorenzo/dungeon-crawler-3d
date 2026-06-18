@@ -38,7 +38,7 @@ func run_tests() -> bool:
 	config.branch_count = 0
 	config.room_count_min = 8
 	config.room_count_max = 20
-	config.injected_tiles = []
+	config.injected_tiles.clear()
 
 	var rule := TileInjectionRuleScript.new()
 	rule.room_data = special_room_data
@@ -91,7 +91,7 @@ func run_tests() -> bool:
 	config2.branch_count = 0
 	config2.room_count_min = 10
 	config2.room_count_max = 20
-	config2.injected_tiles = []
+	config2.injected_tiles.clear()
 
 	var rule2 := TileInjectionRuleScript.new()
 	rule2.room_data = special_room_data
@@ -145,7 +145,7 @@ func run_tests() -> bool:
 	var config3 := base_config.duplicate()
 	config3.random_seed = 4444
 	config3.max_generation_attempts = 3
-	config3.injected_tiles = []
+	config3.injected_tiles.clear()
 
 	var rule3 := TileInjectionRuleScript.new()
 	rule3.room_data = incompatible_room_data
@@ -159,21 +159,29 @@ func run_tests() -> bool:
 	generator3.config = config3
 	root.add_child(generator3)
 
-	var failed_signal_emitted := false
-	var error_reason := ""
+	var signal_state := {
+		"failed_signal_emitted": false,
+		"error_reason": ""
+	}
 	generator3.generation_failed.connect(func(reason: String):
-		failed_signal_emitted = true
-		error_reason = reason
+		signal_state.failed_signal_emitted = true
+		signal_state.error_reason = reason
 	)
 
+	print("  Before generate() - failed_signal_emitted: ", signal_state.failed_signal_emitted)
 	generator3.generate()
+	print("  After generate() - failed_signal_emitted: ", signal_state.failed_signal_emitted)
+	if generator3.active_graph:
+		print("  active_graph placements size: ", generator3.active_graph.placements.size())
+	else:
+		print("  active_graph is null")
 
-	if not failed_signal_emitted:
+	if not signal_state.failed_signal_emitted:
 		printerr("Test 3 failure: Incompatible required injection should have failed generation but it succeeded or did not emit generation_failed")
 		generator3.queue_free()
 		return false
 
-	print("  Generation failed cleanly as expected. Reason: ", error_reason)
+	print("  Generation failed cleanly as expected. Reason: ", signal_state.error_reason)
 	generator3.queue_free()
 
 	# Test 4: Inject on branch (P3)
@@ -186,7 +194,7 @@ func run_tests() -> bool:
 	config4.branch_depth_max = 3
 	config4.room_count_min = 5
 	config4.room_count_max = 20
-	config4.injected_tiles = []
+	config4.injected_tiles.clear()
 
 	var rule4 := TileInjectionRuleScript.new()
 	rule4.room_data = special_room_data
