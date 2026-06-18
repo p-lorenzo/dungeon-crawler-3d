@@ -5,9 +5,15 @@ var _config: DungeonConfig
 var _graph: DungeonGraph
 var _aabb_manager: AABBManager
 var _matcher: ConnectorMatcher
+var _selector: RoomSelector
 var _rng: RandomNumberGenerator
 var _placed_aabbs: Array = []
 var _attempts_at_position: int = 0
+var _branched_from: Array = []
+var failure_reason: String = ""
+var partial_success_note: String = ""
+var branches_placed: int = 0
+var branches_requested: int = 0
 
 
 func build(config: DungeonConfig) -> DungeonGraph:
@@ -15,9 +21,15 @@ func build(config: DungeonConfig) -> DungeonGraph:
 	_graph = DungeonGraph.new()
 	_aabb_manager = AABBManager.new()
 	_matcher = ConnectorMatcher.new()
+	_selector = RoomSelector.new()
 	_rng = RandomNumberGenerator.new()
 	_placed_aabbs.clear()
 	_attempts_at_position = 0
+	_branched_from.clear()
+	failure_reason = ""
+	partial_success_note = ""
+	branches_placed = 0
+	branches_requested = 0
 
 	if _config.random_seed != 0:
 		_rng.seed = _config.random_seed
@@ -26,13 +38,34 @@ func build(config: DungeonConfig) -> DungeonGraph:
 
 	var result: bool = _build_main_path()
 	if not result:
+		_selector.reset()
+		failure_reason = "Cannot satisfy main path length"
 		return _graph
 
+	_populate_main_path_indices()
+
+	branches_requested = _config.branch_count
+	if _config.branch_count > 0:
+		var branch_result: bool = _build_branches()
+		if not branch_result:
+			_selector.reset()
+			failure_reason = "Cannot satisfy branch count"
+			return _graph
+
+	if not _validate_final_path():
+		_selector.reset()
+		failure_reason = "Generated dungeon has no valid entrance-to-boss path"
+		return _graph
+
+	if branches_placed < branches_requested:
+		partial_success_note = "Placed %d of %d requested branches (limited by main path rooms)" % [branches_placed, branches_requested]
+
+	_selector.reset()
 	return _graph
 
 
 func _build_main_path() -> bool:
-	var entrance_data: RoomData = _select_from_pool(_config.entrance_pool)
+	var entrance_data: RoomData = _selector.select_weighted(_config.entrance_pool, _rng)
 	if not entrance_data or not entrance_data.room_scene:
 		return false
 
@@ -66,7 +99,9 @@ func _build_main_path() -> bool:
 			if not _placed_aabbs.is_empty():
 				_placed_aabbs.pop_back()
 			if not _graph.edges.is_empty():
-				_graph.remove_last_edge()
+				var edge: Dictionary = _graph.remove_last_edge()
+				if not edge.is_empty():
+					pass
 
 			_attempts_at_position = 0
 			is_last = (_graph.placements.size() == target_length - 1)
@@ -78,10 +113,181 @@ func _build_main_path() -> bool:
 	return _validate_final_path()
 
 
+func _populate_main_path_indices() -> void:
+	_graph.main_path.clear()
+	for i: int in range(_graph.placements.size()):
+		_graph.main_path.append(i)
+
+
+func _build_branches() -> bool:
+	var target_branch_count: int = _config.branch_count
+	var main_path_len: int = _graph.main_path.size()
+
+	if target_branch_count > main_path_len:
+		target_branch_count = main_path_len
+
+	var available_attachment_indices: Array = _graph.main_path.duplicate()
+
+	for branch_idx: int in range(target_branch_count):
+		if available_attachment_indices.is_empty():
+			break
+
+		var attachment_idx: int = _rng.randi() % available_attachment_indices.size()
+		var main_room_idx: int = available_attachment_indices[attachment_idx]
+		available_attachment_indices.remove_at(attachment_idx)
+
+		var depth: int = _rng.randi_range(_config.branch_depth_min, _config.branch_depth_max)
+		if not _build_single_branch(main_room_idx, depth):
+			return false
+
+		branches_placed += 1
+
+	return true
+
+
+func _build_single_branch(attach_index: int, depth: int) -> bool:
+	var current_parent_idx: int = attach_index
+	var branch_placement_indices: Array = []
+
+	for step: int in range(depth):
+		_attempts_at_position = 0
+		var is_last: bool = (step == depth - 1)
+		var success: bool = _place_next_branch_room(current_parent_idx, is_last)
+
+		if success:
+			var new_idx: int = _graph.placements.size() - 1
+			branch_placement_indices.append(new_idx)
+			current_parent_idx = new_idx
+			continue
+
+		while not success and _attempts_at_position >= _config.max_generation_attempts:
+			if branch_placement_indices.is_empty():
+				return false
+
+			_rollback_branch_step(branch_placement_indices)
+
+			if branch_placement_indices.is_empty():
+				current_parent_idx = attach_index
+			else:
+				current_parent_idx = branch_placement_indices[branch_placement_indices.size() - 1]
+
+			_attempts_at_position = 0
+			is_last = branch_placement_indices.is_empty() or (branch_placement_indices.size() == depth - 1)
+			success = _place_next_branch_room(current_parent_idx, is_last)
+
+		if not success:
+			return false
+
+	_graph.branches.append(branch_placement_indices)
+	_branched_from.append(attach_index)
+	return true
+
+
+func _rollback_branch_step(branch_indices: Array) -> void:
+	var removed_idx: int = branch_indices.pop_back()
+	var rollback_placement: Dictionary = _graph.remove_last_placement()
+	if not rollback_placement.is_empty():
+		if not _placed_aabbs.is_empty():
+			_placed_aabbs.pop_back()
+		if not _graph.edges.is_empty():
+			_graph.remove_last_edge()
+
+
+func _place_next_branch_room(parent_idx: int, is_last: bool) -> bool:
+	var parent_placement: Dictionary = _graph.placements[parent_idx]
+	var pool: Array[RoomData]
+	if is_last:
+		pool = _config.dead_end_pool
+	else:
+		var combined: Array[RoomData] = []
+		combined.append_array(_config.corridor_pool)
+		combined.append_array(_config.junction_pool)
+		pool = combined
+
+	if pool.is_empty():
+		_attempts_at_position = _config.max_generation_attempts
+		return false
+
+	var forward_connector_idx: int = _find_unused_connector(parent_placement, parent_idx)
+	if forward_connector_idx < 0:
+		_attempts_at_position = _config.max_generation_attempts
+		return false
+
+	var forward_type: String = _get_connector_type(parent_placement.room_data.room_scene, forward_connector_idx)
+	if forward_type.is_empty():
+		_attempts_at_position = _config.max_generation_attempts
+		return false
+
+	var working_pool: Array[RoomData] = pool.duplicate()
+	while not working_pool.is_empty():
+		if _attempts_at_position >= _config.max_generation_attempts:
+			return false
+
+		_attempts_at_position += 1
+		var candidate_idx: int = _selector.select_weighted_index(working_pool, _rng)
+		if candidate_idx < 0:
+			return false
+
+		var candidate: RoomData = working_pool[candidate_idx]
+
+		var match_idx: int = _matcher.find_matching_connector(candidate.room_scene, forward_type)
+		if match_idx < 0:
+			working_pool.remove_at(candidate_idx)
+			continue
+
+		var prev_connector_world: Transform3D = _get_connector_world_transform(parent_placement, forward_connector_idx)
+		var candidate_connector_local: Transform3D = _get_connector_local_transform(candidate.room_scene, match_idx)
+
+		var world_transform: Transform3D = _matcher.compute_alignment_transform(prev_connector_world, candidate_connector_local)
+		var room_aabb: AABB = _compute_room_world_aabb(candidate.room_scene, world_transform)
+
+		if _aabb_manager.check_overlap(room_aabb, _placed_aabbs):
+			working_pool.remove_at(candidate_idx)
+			continue
+
+		var category: int
+		if is_last:
+			category = RoomData.RoomCategory.DEAD_END
+		else:
+			category = candidate.category
+
+		var new_placement: Dictionary = {
+			room_data = candidate,
+			world_transform = world_transform,
+			category = category,
+			parent_index = parent_idx,
+			connector_used = match_idx
+		}
+
+		_placed_aabbs.append(room_aabb)
+		_graph.add_placement(new_placement)
+
+		var edge: Dictionary = {
+			room_a_index = parent_idx,
+			room_b_index = _graph.placements.size() - 1,
+			connector_a_local = _get_connector_local_transform(parent_placement.room_data.room_scene, forward_connector_idx),
+			connector_b_local = candidate_connector_local,
+			connection_type = forward_type
+		}
+		_graph.add_edge(edge)
+
+		return true
+
+	_attempts_at_position = _config.max_generation_attempts
+	return false
+
+
 func _place_next_on_path(is_last: bool) -> bool:
 	var prev_idx: int = _graph.placements.size() - 1
 	var prev_placement: Dictionary = _graph.placements[prev_idx]
-	var pool: Array[RoomData] = _config.boss_pool if is_last else _config.corridor_pool
+	var pool: Array[RoomData]
+	if is_last:
+		pool = _config.boss_pool
+	else:
+		var combined: Array[RoomData] = []
+		combined.append_array(_config.corridor_pool)
+		combined.append_array(_config.junction_pool)
+		pool = combined
 
 	if pool.is_empty():
 		_attempts_at_position = _config.max_generation_attempts
@@ -97,20 +303,21 @@ func _place_next_on_path(is_last: bool) -> bool:
 		_attempts_at_position = _config.max_generation_attempts
 		return false
 
-	var shuffled_indices: Array = _shuffled_range(pool.size())
-	for candidate_i: int in shuffled_indices:
+	var working_pool: Array[RoomData] = pool.duplicate()
+	while not working_pool.is_empty():
 		if _attempts_at_position >= _config.max_generation_attempts:
 			return false
 
 		_attempts_at_position += 1
-		var candidate: RoomData = pool[candidate_i]
-		if not candidate or not candidate.room_scene:
-			continue
-		if candidate.spawn_weight <= 0.0:
-			continue
+		var candidate_idx: int = _selector.select_weighted_index(working_pool, _rng)
+		if candidate_idx < 0:
+			return false
+
+		var candidate: RoomData = working_pool[candidate_idx]
 
 		var match_idx: int = _matcher.find_matching_connector(candidate.room_scene, forward_type)
 		if match_idx < 0:
+			working_pool.remove_at(candidate_idx)
 			continue
 
 		var prev_connector_world: Transform3D = _get_connector_world_transform(prev_placement, forward_connector_idx)
@@ -120,9 +327,11 @@ func _place_next_on_path(is_last: bool) -> bool:
 		var room_aabb: AABB = _compute_room_world_aabb(candidate.room_scene, world_transform)
 
 		if _aabb_manager.check_overlap(room_aabb, _placed_aabbs):
+			working_pool.remove_at(candidate_idx)
 			continue
 
-		var category: int = RoomData.RoomCategory.BOSS if is_last else RoomData.RoomCategory.CORRIDOR
+		var category: int = RoomData.RoomCategory.BOSS if is_last else candidate.category
+
 		var new_placement: Dictionary = {
 			room_data = candidate,
 			world_transform = world_transform,
@@ -161,19 +370,7 @@ func _place_room(placement: Dictionary) -> bool:
 
 
 func _select_from_pool(pool: Array[RoomData]) -> RoomData:
-	if pool.is_empty():
-		return null
-
-	var valid: Array[RoomData] = []
-	for room: RoomData in pool:
-		if room and room.room_scene:
-			valid.append(room)
-
-	if valid.is_empty():
-		return null
-
-	var idx: int = _rng.randi() % valid.size()
-	return valid[idx]
+	return _selector.select_weighted(pool, _rng)
 
 
 func _find_unused_connector(placement: Dictionary, room_index: int) -> int:
@@ -250,17 +447,3 @@ func _get_aabb_corners(aabb: AABB) -> Array:
 func _validate_final_path() -> bool:
 	var validator: PathValidator = PathValidator.new()
 	return validator.validate_path(_graph)
-
-
-func _shuffled_range(size: int) -> Array:
-	var indices: Array = []
-	for i: int in range(size):
-		indices.append(i)
-
-	for i: int in range(size - 1, 0, -1):
-		var j: int = _rng.randi() % (i + 1)
-		var temp = indices[i]
-		indices[i] = indices[j]
-		indices[j] = temp
-
-	return indices

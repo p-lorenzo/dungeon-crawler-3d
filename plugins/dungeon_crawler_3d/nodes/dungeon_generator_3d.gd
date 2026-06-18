@@ -41,9 +41,19 @@ func generate() -> void:
 		generation_failed.emit("No boss room configured")
 		return
 
-	if config.corridor_pool.is_empty() and config.main_path_length > 2:
-		generation_failed.emit("No corridor rooms configured")
+	if config.corridor_pool.is_empty() and config.junction_pool.is_empty() and config.main_path_length > 2:
+		generation_failed.emit("No corridor or junction rooms configured for main path")
 		return
+
+	if config.branch_count > 0:
+		if config.dead_end_pool.is_empty():
+			generation_failed.emit("No dead-end rooms configured for branches")
+			return
+
+		var has_branch_pool: bool = not config.corridor_pool.is_empty() or not config.junction_pool.is_empty()
+		if not has_branch_pool:
+			generation_failed.emit("No corridor or junction rooms configured for branch paths")
+			return
 
 	if not _validate_all_scenes():
 		return
@@ -52,16 +62,23 @@ func generate() -> void:
 	var graph: DungeonGraph = builder.build(config)
 
 	if graph.placements.is_empty():
-		generation_failed.emit("Failed to generate dungeon layout")
+		var reason: String = builder.failure_reason
+		if reason.is_empty():
+			reason = "Failed to generate dungeon layout"
+		generation_failed.emit(reason)
 		return
 
 	var validator: PathValidator = PathValidator.new()
 	if not validator.validate_path(graph):
-		generation_failed.emit("Generated dungeon has no valid entrance-to-boss path")
+		generation_failed.emit(builder.failure_reason)
 		return
 
 	_generate_dungeon_root()
 	_instantiate_rooms(graph)
+
+	if not builder.partial_success_note.is_empty():
+		print_rich("[color=yellow]DungeonGenerator: %s[/color]" % builder.partial_success_note)
+
 	generation_completed.emit(_dungeon_root)
 
 

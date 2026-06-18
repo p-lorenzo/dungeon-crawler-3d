@@ -38,10 +38,10 @@
 | Phase 1: Setup | T001–T003 (3) | **Complete** |
 | Phase 2: Foundational | T004–T007 (4) | **Complete** |
 | Phase 3: US1 — Generate Dungeon (MVP) | T008–T015 (8) | **Complete** |
-| Phase 4: US2 — Dungeon Topology | T016–T020 (5) | Not started |
+| Phase 4: US2 — Dungeon Topology | T016–T020 (5) | **Complete** |
 | Phase 5: US3 — Editor Iteration | T021–T026 (6) | Not started |
 | Phase 6: Polish | T027–T031 (5) | Not started |
-| **Total** | **31 tasks** | **15/31 complete** |
+| **Total** | **31 tasks** | **20/31 complete** |
 
 ---
 
