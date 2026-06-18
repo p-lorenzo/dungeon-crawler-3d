@@ -11,7 +11,7 @@ func validate_path(graph: DungeonGraph) -> bool:
 	if boss_idx < 0:
 		return false
 
-	var path: Array = graph.get_path(entrance_idx, boss_idx)
+	var path: Array[int] = graph.get_path(entrance_idx, boss_idx)
 	return not path.is_empty()
 
 

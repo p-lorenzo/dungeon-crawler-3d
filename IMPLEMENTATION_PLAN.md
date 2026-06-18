@@ -14,14 +14,14 @@
 |-------|--------|---------|
 | Godot project scaffold | DONE | `project.godot`, `icon.svg` exist; Jolt Physics, GL Compatibility configured |
 | Specifications & Design | DONE | `spec.md`, `plan.md`, `data-model.md`, `research.md`, `contracts/`, `quickstart.md`, `tasks.md` all complete |
-| Plugin directory structure | **MISSING** | `plugins/dungeon_crawler_3d/` not created |
-| Plugin registration | **MISSING** | No `plugin.cfg`, no EditorPlugin entry script |
-| GDScript implementation | **PARTIAL** | 9 of 11 planned `.gd` files exist |
-| Custom Resources | **DONE** | `DungeonConfig`, `RoomData` complete |
-| Custom Nodes | **DONE** | `DungeonGenerator3D`, `RoomConnector3D` complete |
-| Core algorithm | **DONE** | `DungeonBuilder`, `DungeonGraph`, AABB collision, path validation complete |
-| Demo scene | **MISSING** | `demo/demo_dungeon.tscn` not created |
-| Automated tests | **N/A** | Not required for v1 |
+| Plugin directory structure | DONE | `plugins/dungeon_crawler_3d/` with `core/`, `nodes/`, `resources/` subdirectories |
+| Plugin registration | DONE | `plugin.cfg` with metadata; EditorPlugin entry script registers custom types |
+| GDScript implementation | DONE | All 11 planned `.gd` files exist with full static typing |
+| Custom Resources | DONE | `DungeonConfig`, `RoomData` complete |
+| Custom Nodes | DONE | `DungeonGenerator3D`, `RoomConnector3D` complete |
+| Core algorithm | DONE | `DungeonBuilder`, `DungeonGraph`, AABB collision, path validation, room selector complete |
+| Demo scene | DONE | `demo/demo_dungeon.tscn` with sample config, room scenes, and RoomData resources |
+| Automated tests | N/A | Not required for v1 |
 
 ### Spec / Constitution Alignment
 
@@ -39,9 +39,9 @@
 | Phase 2: Foundational | T004–T007 (4) | **Complete** |
 | Phase 3: US1 — Generate Dungeon (MVP) | T008–T015 (8) | **Complete** |
 | Phase 4: US2 — Dungeon Topology | T016–T020 (5) | **Complete** |
-| Phase 5: US3 — Editor Iteration | T021–T026 (6) | Not started |
-| Phase 6: Polish | T027–T031 (5) | Not started |
-| **Total** | **31 tasks** | **20/31 complete** |
+| Phase 5: US3 — Editor Iteration | T021–T026 (6) | **Complete** |
+| Phase 6: Polish | T027–T031 (5) | **Complete** |
+| **Total** | **31 tasks** | **31/31 complete** |
 
 ---
 

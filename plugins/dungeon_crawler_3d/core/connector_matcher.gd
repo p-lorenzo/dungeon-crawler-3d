@@ -30,9 +30,9 @@ func get_connectors(room_scene: PackedScene) -> Array[Transform3D]:
 	return transforms
 
 
-func get_connector_types(room_scene: PackedScene) -> Array:
+func get_connector_types(room_scene: PackedScene) -> Array[String]:
 	var instance: Node = room_scene.instantiate()
-	var types: Array = []
+	var types: Array[String] = []
 
 	var connectors: Array[Node] = _find_connectors(instance)
 	for connector: RoomConnector3D in connectors:

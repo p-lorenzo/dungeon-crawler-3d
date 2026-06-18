@@ -7,9 +7,9 @@ var _aabb_manager: AABBManager
 var _matcher: ConnectorMatcher
 var _selector: RoomSelector
 var _rng: RandomNumberGenerator
-var _placed_aabbs: Array = []
+var _placed_aabbs: Array[AABB] = []
 var _attempts_at_position: int = 0
-var _branched_from: Array = []
+var _branched_from: Array[int] = []
 var failure_reason: String = ""
 var partial_success_note: String = ""
 var branches_placed: int = 0
@@ -36,10 +36,21 @@ func build(config: DungeonConfig) -> DungeonGraph:
 	else:
 		_rng.randomize()
 
+	var room_count_hard_cap: int = _config.room_count_max
+	if _config.main_path_length > room_count_hard_cap:
+		_selector.reset()
+		failure_reason = "Main path length (%d) exceeds room count max (%d)" % [_config.main_path_length, room_count_hard_cap]
+		return _graph
+
 	var result: bool = _build_main_path()
 	if not result:
 		_selector.reset()
 		failure_reason = "Cannot satisfy main path length"
+		return _graph
+
+	if _graph.total_rooms > room_count_hard_cap:
+		_selector.reset()
+		failure_reason = "Exceeded maximum room count (%d)" % room_count_hard_cap
 		return _graph
 
 	_populate_main_path_indices()
@@ -50,6 +61,11 @@ func build(config: DungeonConfig) -> DungeonGraph:
 		if not branch_result:
 			_selector.reset()
 			failure_reason = "Cannot satisfy branch count"
+			return _graph
+
+		if _graph.total_rooms > room_count_hard_cap:
+			_selector.reset()
+			failure_reason = "Branches exceeded maximum room count (%d)" % room_count_hard_cap
 			return _graph
 
 	if not _validate_final_path():
@@ -122,14 +138,18 @@ func _populate_main_path_indices() -> void:
 func _build_branches() -> bool:
 	var target_branch_count: int = _config.branch_count
 	var main_path_len: int = _graph.main_path.size()
+	var room_count_max: int = _config.room_count_max
 
 	if target_branch_count > main_path_len:
 		target_branch_count = main_path_len
 
-	var available_attachment_indices: Array = _graph.main_path.duplicate()
+	var available_attachment_indices: Array[int] = _graph.main_path.duplicate()
 
 	for branch_idx: int in range(target_branch_count):
 		if available_attachment_indices.is_empty():
+			break
+
+		if _graph.total_rooms >= room_count_max:
 			break
 
 		var attachment_idx: int = _rng.randi() % available_attachment_indices.size()
@@ -137,6 +157,10 @@ func _build_branches() -> bool:
 		available_attachment_indices.remove_at(attachment_idx)
 
 		var depth: int = _rng.randi_range(_config.branch_depth_min, _config.branch_depth_max)
+		var remaining: int = room_count_max - _graph.total_rooms
+		if depth > remaining:
+			depth = remaining
+
 		if not _build_single_branch(main_room_idx, depth):
 			return false
 
@@ -147,7 +171,7 @@ func _build_branches() -> bool:
 
 func _build_single_branch(attach_index: int, depth: int) -> bool:
 	var current_parent_idx: int = attach_index
-	var branch_placement_indices: Array = []
+	var branch_placement_indices: Array[int] = []
 
 	for step: int in range(depth):
 		_attempts_at_position = 0
@@ -183,7 +207,7 @@ func _build_single_branch(attach_index: int, depth: int) -> bool:
 	return true
 
 
-func _rollback_branch_step(branch_indices: Array) -> void:
+func _rollback_branch_step(branch_indices: Array[int]) -> void:
 	var removed_idx: int = branch_indices.pop_back()
 	var rollback_placement: Dictionary = _graph.remove_last_placement()
 	if not rollback_placement.is_empty():
@@ -369,16 +393,12 @@ func _place_room(placement: Dictionary) -> bool:
 	return true
 
 
-func _select_from_pool(pool: Array[RoomData]) -> RoomData:
-	return _selector.select_weighted(pool, _rng)
-
-
 func _find_unused_connector(placement: Dictionary, room_index: int) -> int:
 	var room_scene: PackedScene = placement.room_data.room_scene
 	var connectors: Array[Transform3D] = _matcher.get_connectors(room_scene)
-	var types: Array = _matcher.get_connector_types(room_scene)
+	var types: Array[String] = _matcher.get_connector_types(room_scene)
 
-	var used_indices: Array = []
+	var used_indices: Array[int] = []
 	for edge: Dictionary in _graph.edges:
 		if edge.room_a_index == room_index:
 			var local: Transform3D = edge.connector_a_local
@@ -399,7 +419,7 @@ func _find_unused_connector(placement: Dictionary, room_index: int) -> int:
 
 
 func _get_connector_type(room_scene: PackedScene, connector_idx: int) -> String:
-	var types: Array = _matcher.get_connector_types(room_scene)
+	var types: Array[String] = _matcher.get_connector_types(room_scene)
 	if connector_idx >= 0 and connector_idx < types.size():
 		return types[connector_idx]
 	return ""
@@ -420,7 +440,7 @@ func _get_connector_local_transform(room_scene: PackedScene, connector_idx: int)
 
 func _compute_room_world_aabb(room_scene: PackedScene, world_transform: Transform3D) -> AABB:
 	var local_aabb: AABB = _compute_scene_aabb(room_scene)
-	var corners: Array = _get_aabb_corners(local_aabb)
+	var corners: Array[Vector3] = _get_aabb_corners(local_aabb)
 	var world_aabb: AABB = AABB(world_transform * corners[0], Vector3.ZERO)
 	for i: int in range(1, corners.size()):
 		world_aabb = world_aabb.expand(world_transform * corners[i])
@@ -431,7 +451,7 @@ func _compute_scene_aabb(room_scene: PackedScene) -> AABB:
 	return _aabb_manager.compute_aabb(room_scene)
 
 
-func _get_aabb_corners(aabb: AABB) -> Array:
+func _get_aabb_corners(aabb: AABB) -> Array[Vector3]:
 	return [
 		Vector3(aabb.position.x, aabb.position.y, aabb.position.z),
 		Vector3(aabb.position.x + aabb.size.x, aabb.position.y, aabb.position.z),

@@ -151,6 +151,8 @@ func _validate_all_scenes() -> bool:
 		"dead_end": config.dead_end_pool
 	}
 
+	var matcher: ConnectorMatcher = ConnectorMatcher.new()
+
 	for pool_name: String in pools:
 		var pool: Array[RoomData] = pools[pool_name]
 		for room_data: RoomData in pool:
@@ -158,6 +160,13 @@ func _validate_all_scenes() -> bool:
 				continue
 			if not room_data.room_scene:
 				generation_failed.emit("Missing PackedScene reference in %s pool" % pool_name)
+				return false
+
+			var connector_count: int = matcher.get_connectors(room_data.room_scene).size()
+			if connector_count == 0:
+				print_rich("[color=yellow]DungeonGenerator: Room in %s pool has 0 connectors[/color]" % pool_name)
+			if pool_name == "dead_end" and connector_count < 1:
+				generation_failed.emit("Dead-end room in pool has no connectors")
 				return false
 
 	return true

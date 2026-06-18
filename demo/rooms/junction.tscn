@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://plugins/dungeon_crawler_3d/nodes/room_connector_3d.gd" id="1_connector"]
+
+[sub_resource type="BoxMesh" id="box_junction"]
+size = Vector3(6, 4, 6)
+
+[node name="JunctionRoom" type="Node3D"]
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("box_junction")
+
+[node name="EntryConnector" type="Node3D" parent="."]
+script = ExtResource("1_connector")
+connection_type = "standard_door"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+
+[node name="ForwardConnector" type="Node3D" parent="."]
+script = ExtResource("1_connector")
+connection_type = "standard_door"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="BranchConnector" type="Node3D" parent="."]
+script = ExtResource("1_connector")
+connection_type = "standard_door"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)

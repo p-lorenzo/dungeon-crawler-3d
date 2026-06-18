@@ -4,7 +4,7 @@
 
 **Created**: 2026-06-18
 
-**Status**: Draft
+**Status**: COMPLETE
 
 **Input**: User description: "costruiamo un plugin godot che permetta di generare dei dungeon procedurali a partire da una configurazione del dungeon (numero di rami, profonditá rami, lunghezza percorso principale etc.) e da varie stanze 'prefab/packedscene' create con dei connettori che permettono di connettersi ad altre stanze, il più quanto simile ma migliore e più semplice del plugin dungen giá esistente su unity"
 

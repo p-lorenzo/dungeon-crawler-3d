@@ -94,12 +94,12 @@
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] Add inspector buttons to `DungeonGenerator3D` in `plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd` — `@export var _generate_button: bool` setter triggers `generate()`; `@export var _clear_button: bool` setter triggers `clear()`; use `@export_category("Actions")` for inspector grouping
-- [ ] T022 [US3] Implement `generation_completed(dungeon_root: Node3D)` signal on `DungeonGenerator3D` — emitted after all rooms are instantiated and validated; per contracts/generator-api.md
-- [ ] T023 [US3] Implement `generation_failed(reason: String)` signal on `DungeonGenerator3D` — emitted on any failure with human-readable reason; wire all failure paths from DungeonBuilder through to this signal
-- [ ] T024 [US3] Add pre-generation validation in `DungeonGenerator3D` — check `config != null`, pools non-empty, entrance/boss pools non-empty, PackedScene references valid; emit `generation_failed` for each detected issue BEFORE any rooms are placed
-- [ ] T025 [US3] Create demo scene `demo/demo_dungeon.tscn` — add a `DungeonGenerator3D` node; create a sample `DungeonConfig` resource (demo_config.tres) with 5 sample RoomData entries; assign config to generator
-- [ ] T026 [US3] End-to-end validation: follow all 8 quickstart.md validation scenarios (VS-001 through VS-008) in the demo scene; fix any issues found
+- [x] T021 [US3] Add inspector buttons to `DungeonGenerator3D` in `plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd` — `@export var _generate_button: bool` setter triggers `generate()`; `@export var _clear_button: bool` setter triggers `clear()`; use `@export_category("Actions")` for inspector grouping
+- [x] T022 [US3] Implement `generation_completed(dungeon_root: Node3D)` signal on `DungeonGenerator3D` — emitted after all rooms are instantiated and validated; per contracts/generator-api.md
+- [x] T023 [US3] Implement `generation_failed(reason: String)` signal on `DungeonGenerator3D` — emitted on any failure with human-readable reason; wire all failure paths from DungeonBuilder through to this signal
+- [x] T024 [US3] Add pre-generation validation in `DungeonGenerator3D` — check `config != null`, pools non-empty, entrance/boss pools non-empty, PackedScene references valid; emit `generation_failed` for each detected issue BEFORE any rooms are placed
+- [x] T025 [US3] Create demo scene `demo/demo_dungeon.tscn` — add a `DungeonGenerator3D` node; create a sample `DungeonConfig` resource (demo_config.tres) with 5 sample RoomData entries; assign config to generator
+- [x] T026 [US3] End-to-end validation: follow all 8 quickstart.md validation scenarios (VS-001 through VS-008) in the demo scene; fix any issues found
 
 **Checkpoint**: Full editor workflow — Generate/Clear buttons, signals, demo scene, all validation scenarios passing.
 
@@ -109,11 +109,11 @@
 
 **Purpose**: Edge cases, error handling, and cleanup.
 
-- [ ] T027 [P] Add edge case handling in `plugins/dungeon_crawler_3d/core/dungeon_builder.gd` — empty pool detection, incompatible connector types, unsatisfiable room count, missing PackedScene reference detection; all produce clear error strings for `generation_failed`
-- [ ] T028 [P] Add safety limits enforcement in `plugins/dungeon_crawler_3d/core/dungeon_builder.gd` — enforce `room_count_max` as hard cap; enforce `branch_depth_max` as per-branch limit; prevent infinite loops via `max_generation_attempts` per position
-- [ ] T029 [P] Add connector count validation on RoomData — DEAD_END rooms must have at least 1 connector; warn if room has 0 connectors
-- [ ] T030 Clean up code — ensure all files use static typing (`var timer: Timer`, `func generate() -> void:`), consistent naming, remove debug prints
-- [ ] T031 Run through VS-001 through VS-008 quickstart validation one final time; document results
+- [x] T027 [P] Add edge case handling in `plugins/dungeon_crawler_3d/core/dungeon_builder.gd` — empty pool detection, incompatible connector types, unsatisfiable room count, missing PackedScene reference detection; all produce clear error strings for `generation_failed`
+- [x] T028 [P] Add safety limits enforcement in `plugins/dungeon_crawler_3d/core/dungeon_builder.gd` — enforce `room_count_max` as hard cap; enforce `branch_depth_max` as per-branch limit; prevent infinite loops via `max_generation_attempts` per position
+- [x] T029 [P] Add connector count validation on RoomData — DEAD_END rooms must have at least 1 connector; warn if room has 0 connectors
+- [x] T030 Clean up code — ensure all files use static typing (`var timer: Timer`, `func generate() -> void:`), consistent naming, remove debug prints
+- [x] T031 Run through VS-001 through VS-008 quickstart validation one final time; document results
 
 ---
 

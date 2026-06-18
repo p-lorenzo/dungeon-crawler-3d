@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://plugins/dungeon_crawler_3d/resources/room_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://demo/rooms/boss.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_script")
+room_scene = ExtResource("2_scene")
+spawn_weight = 1.0
+category = 1

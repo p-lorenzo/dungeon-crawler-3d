@@ -3,8 +3,8 @@ extends RefCounted
 
 var placements: Array[Dictionary] = []
 var edges: Array[Dictionary] = []
-var main_path: Array = []
-var branches: Array = []
+var main_path: Array[int] = []
+var branches: Array[Array] = []
 var total_rooms: int = 0
 
 
@@ -34,9 +34,9 @@ func remove_last_edge() -> Dictionary:
 	return removed
 
 
-func get_path(from_index: int, to_index: int) -> Array:
-	var visited: Array = []
-	var queue: Array = [from_index]
+func get_path(from_index: int, to_index: int) -> Array[int]:
+	var visited: Array[int] = []
+	var queue: Array[int] = [from_index]
 	var came_from: Dictionary = {from_index: -1}
 
 	while not queue.is_empty():
@@ -59,8 +59,8 @@ func get_path(from_index: int, to_index: int) -> Array:
 	return []
 
 
-func _reconstruct_path(came_from: Dictionary, from_idx: int, to_idx: int) -> Array:
-	var path: Array = [to_idx]
+func _reconstruct_path(came_from: Dictionary, from_idx: int, to_idx: int) -> Array[int]:
+	var path: Array[int] = [to_idx]
 	var current: int = to_idx
 	while current != from_idx:
 		current = came_from.get(current, -1)
