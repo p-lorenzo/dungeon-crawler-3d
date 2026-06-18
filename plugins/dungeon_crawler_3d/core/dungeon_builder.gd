@@ -154,22 +154,17 @@ func _place_path_node_recursive(depth: int) -> bool:
 	var working_pool: Array[RoomData] = pool.duplicate()
 	var attempts: int = 0
 
-	print("  Recursion depth %d: start trying candidates from pool of size %d" % [depth, working_pool.size()])
-
 	while not working_pool.is_empty() and attempts < _config.max_generation_attempts:
 		attempts += 1
 		var candidate_idx: int = _selector.select_weighted_index(working_pool, _rng)
 		if candidate_idx < 0:
-			print("    depth %d: select_weighted_index returned < 0" % depth)
 			break
 
 		var candidate: RoomData = working_pool[candidate_idx]
 		working_pool.remove_at(candidate_idx)
-		print("    depth %d: attempt %d, candidate room: %s" % [depth, attempts, candidate.room_scene.resource_path.get_file()])
 
 		var match_idx: int = _matcher.find_matching_connector(candidate.room_scene, forward_type)
 		if match_idx < 0:
-			print("      depth %d: candidate %s has no matching connector for type '%s'" % [depth, candidate.room_scene.resource_path.get_file(), forward_type])
 			continue
 
 		var prev_connector_world: Transform3D = _get_connector_world_transform(prev_placement, forward_connector_idx)
@@ -179,7 +174,6 @@ func _place_path_node_recursive(depth: int) -> bool:
 		var room_aabb: AABB = _compute_room_world_aabb(candidate.room_scene, world_transform)
 
 		if _aabb_manager.check_overlap(room_aabb, _placed_aabbs):
-			print("      depth %d: candidate %s overlaps with existing placements" % [depth, candidate.room_scene.resource_path.get_file()])
 			continue
 
 		var category: int = RoomData.RoomCategory.BOSS if is_last else candidate.category
@@ -203,19 +197,15 @@ func _place_path_node_recursive(depth: int) -> bool:
 		}
 		_graph.add_edge(edge)
 
-		print("      depth %d: placed room %s successfully, recursing..." % [depth, candidate.room_scene.resource_path.get_file()])
-
 		# Recurse
 		if _place_path_node_recursive(depth + 1):
 			return true
 
 		# Backtrack
-		print("      depth %d: recursion failed, backtracking room %s" % [depth, candidate.room_scene.resource_path.get_file()])
 		_graph.remove_last_placement()
 		_placed_aabbs.pop_back()
 		_graph.remove_last_edge()
 
-	print("  Recursion depth %d: exhausted all candidates (attempts=%d), returning false" % [depth, attempts])
 	return false
 
 
@@ -256,7 +246,7 @@ func _build_branches() -> bool:
 			placement_success = _build_single_branch(main_room_idx, depth)
 
 		if not placement_success:
-			return false
+			continue
 
 		branches_placed += 1
 
