@@ -5,6 +5,7 @@ const RoomConnector3DScript: Script = preload("res://plugins/dungeon_crawler_3d/
 const DungeonGenerator3DScript: Script = preload("res://plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd")
 const KeySpawnPoint3DScript: Script = preload("res://plugins/dungeon_crawler_3d/nodes/key_spawn_point_3d.gd")
 const PropGroup3DScript: Script = preload("res://plugins/dungeon_crawler_3d/nodes/prop_group_3d.gd")
+const DungeonNavMeshAdapter3DScript: Script = preload("res://plugins/dungeon_crawler_3d/nodes/dungeon_navmesh_adapter_3d.gd")
 
 
 func _enter_tree() -> void:
@@ -12,6 +13,7 @@ func _enter_tree() -> void:
 	add_custom_type("DungeonGenerator3D", "Node3D", DungeonGenerator3DScript, null)
 	add_custom_type("KeySpawnPoint3D", "Node3D", KeySpawnPoint3DScript, null)
 	add_custom_type("PropGroup3D", "Node3D", PropGroup3DScript, null)
+	add_custom_type("DungeonNavMeshAdapter3D", "Node", DungeonNavMeshAdapter3DScript, null)
 
 
 func _exit_tree() -> void:
@@ -19,3 +21,4 @@ func _exit_tree() -> void:
 	remove_custom_type("DungeonGenerator3D")
 	remove_custom_type("KeySpawnPoint3D")
 	remove_custom_type("PropGroup3D")
+	remove_custom_type("DungeonNavMeshAdapter3D")

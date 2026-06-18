@@ -4,7 +4,7 @@
 
 **Created**: 2026-06-18
 
-**Status**: Draft
+**Status**: COMPLETE
 
 **Input**: User description: "specs/proposals/006-navmesh-baking-adapter.md"
 

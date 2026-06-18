@@ -17,7 +17,7 @@
 | **002: Lock & Key Puzzle System** | **DONE** | All 8 tasks (T032–T039) implemented, integrating KeySpawnPoint3D, locked connectors, and KeyLockManager solver. |
 | **003: Doorway Blocker & Prefab Adapters** | **DONE** | All 6 tasks (T040–T045) implemented, spawning active doorway scenes on lower graph index room and blocker scenes on unused connectors. |
 | **004: Prop Randomizer & Clamping** | **DONE** | All 7 tasks (T046–T052) implemented, integrating PropGroup3D, DungeonPropManager, and global limit clamping. |
-| **005: NavMesh Baking Adapter** | **PLANNED** | Feature specification exists. The codebase has no adapter node to listen for generation signals and rebuild Godot's `NavigationRegion3D` paths. |
+| **005: NavMesh Baking Adapter** | **DONE** | Fully implemented custom node DungeonNavMeshAdapter3D listening to generation_completed, supporting async/sync baking, fallback spawning, and registered in editor. |
 
 ### Spec / Constitution Alignment
 
@@ -39,9 +39,9 @@
 | **Phase 7: Lock & Key System (002)** | T032–T039 (8) | **Complete** |
 | **Phase 8: Doorway Blockers (003)** | T040–T045 (6) | **Complete** |
 | **Phase 9: Prop Randomizer (004)** | T046–T052 (7) | **Complete** |
-| **Phase 10: NavMesh Baking Adapter (005)** | T053–T058 (6) | **PLANNED** |
-| **Phase 11: E2E & Final Verification** | T059–T061 (3) | **PLANNED** |
-| **Total** | **61 tasks** | **52/61 complete** |
+| **Phase 10: NavMesh Baking Adapter (005)** | T053–T058 (6) | **Complete** |
+| **Phase 11: E2E & Final Verification** | T059–T061 (3) | **Complete** |
+| **Total** | **61 tasks** | **61/61 complete** |
 
 ---
 
