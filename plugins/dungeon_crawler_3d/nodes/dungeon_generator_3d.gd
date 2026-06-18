@@ -28,6 +28,20 @@ var _dungeon_root: Node3D
 var active_graph: DungeonGraph
 
 
+func _init() -> void:
+	generation_failed.connect(func(reason: String):
+		push_error("Dungeon Generation Failed: " + reason)
+		printerr("Dungeon Generation Failed: " + reason)
+	)
+	generation_note.connect(func(note: String):
+		print_rich("[color=yellow]Dungeon Generation Note: %s[/color]" % note)
+	)
+	generation_completed.connect(func(root_node: Node3D):
+		print("Dungeon Generation Completed successfully!")
+	)
+
+
+
 func generate() -> void:
 	if not config:
 		generation_failed.emit("No configuration assigned")
