@@ -2,36 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cime2ajh1h35e" path="res://plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd" id="1_script"]
 [ext_resource type="Resource" uid="uid://btmt6rrghuiwt" path="res://demo/demo_config.tres" id="2_config"]
-[ext_resource type="PackedScene" path="res://demo/rooms/entrance.tscn" id="3_edu5r"]
-[ext_resource type="PackedScene" path="res://demo/rooms/corridor.tscn" id="4_dgp78"]
-[ext_resource type="PackedScene" path="res://demo/rooms/junction.tscn" id="5_1bphm"]
-[ext_resource type="PackedScene" path="res://demo/rooms/boss.tscn" id="6_p7d4h"]
 
 [node name="DungeonGenerator" type="Node3D" unique_id=12323142]
 script = ExtResource("1_script")
 config = ExtResource("2_config")
-
-[node name="DungeonLayout" type="Node3D" parent="." unique_id=1050386081]
-
-[node name="Entrance_0" type="Node3D" parent="DungeonLayout" unique_id=567685538 instance=ExtResource("3_edu5r")]
-
-[node name="Corridor_1" type="Node3D" parent="DungeonLayout" unique_id=173291767 instance=ExtResource("4_dgp78")]
-transform = Transform3D(1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, 1, 3.496911e-07, 0, 6.5)
-
-[node name="Corridor_2" type="Node3D" parent="DungeonLayout" unique_id=113577527 instance=ExtResource("4_dgp78")]
-transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 1.3987644e-06, 0, 14.5)
-
-[node name="Junction_3" type="Node3D" parent="DungeonLayout" unique_id=1480871645 instance=ExtResource("5_1bphm")]
-transform = Transform3D(1, 0, 2.6226832e-07, 0, 1, 0, -2.6226832e-07, 0, 1, 2.8849515e-06, 0, 21.5)
-
-[node name="Junction_4" type="Node3D" parent="DungeonLayout" unique_id=249605514 instance=ExtResource("5_1bphm")]
-transform = Transform3D(1, 0, 3.496911e-07, 0, 1, 0, -3.496911e-07, 0, 1, 4.7208296e-06, 0, 27.5)
-
-[node name="Junction_5" type="Node3D" parent="DungeonLayout" unique_id=1349437106 instance=ExtResource("5_1bphm")]
-transform = Transform3D(1, 0, 4.371139e-07, 0, 1, 0, -4.371139e-07, 0, 1, 7.0812443e-06, 0, 33.5)
-
-[node name="Junction_6" type="Node3D" parent="DungeonLayout" unique_id=1735730864 instance=ExtResource("5_1bphm")]
-transform = Transform3D(1, 0, 5.245367e-07, 0, 1, 0, -5.245367e-07, 0, 1, 9.966196e-06, 0, 39.5)
-
-[node name="Boss_7" type="Node3D" parent="DungeonLayout" unique_id=1207188417 instance=ExtResource("6_p7d4h")]
-transform = Transform3D(1, 0, 6.119595e-07, 0, 1, 0, -6.119595e-07, 0, 1, 1.3987643e-05, 0, 46.5)
