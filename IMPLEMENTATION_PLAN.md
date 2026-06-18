@@ -16,10 +16,10 @@
 | Specifications & Design | DONE | `spec.md`, `plan.md`, `data-model.md`, `research.md`, `contracts/`, `quickstart.md`, `tasks.md` all complete |
 | Plugin directory structure | **MISSING** | `plugins/dungeon_crawler_3d/` not created |
 | Plugin registration | **MISSING** | No `plugin.cfg`, no EditorPlugin entry script |
-| GDScript implementation | **MISSING** | 0 of 11 planned `.gd` files exist |
-| Custom Resources | **MISSING** | No `DungeonConfig`, no `RoomData` |
-| Custom Nodes | **MISSING** | No `DungeonGenerator3D`, no `RoomConnector3D` |
-| Core algorithm | **MISSING** | No `DungeonBuilder`, no `DungeonGraph`, no AABB collision, no path validation |
+| GDScript implementation | **PARTIAL** | 9 of 11 planned `.gd` files exist |
+| Custom Resources | **DONE** | `DungeonConfig`, `RoomData` complete |
+| Custom Nodes | **DONE** | `DungeonGenerator3D`, `RoomConnector3D` complete |
+| Core algorithm | **DONE** | `DungeonBuilder`, `DungeonGraph`, AABB collision, path validation complete |
 | Demo scene | **MISSING** | `demo/demo_dungeon.tscn` not created |
 | Automated tests | **N/A** | Not required for v1 |
 
@@ -37,11 +37,11 @@
 |-------|-------|--------|
 | Phase 1: Setup | T001–T003 (3) | **Complete** |
 | Phase 2: Foundational | T004–T007 (4) | **Complete** |
-| Phase 3: US1 — Generate Dungeon (MVP) | T008–T015 (8) | Not started |
+| Phase 3: US1 — Generate Dungeon (MVP) | T008–T015 (8) | **Complete** |
 | Phase 4: US2 — Dungeon Topology | T016–T020 (5) | Not started |
 | Phase 5: US3 — Editor Iteration | T021–T026 (6) | Not started |
 | Phase 6: Polish | T027–T031 (5) | Not started |
-| **Total** | **31 tasks** | **7/31 complete** |
+| **Total** | **31 tasks** | **15/31 complete** |
 
 ---
 
