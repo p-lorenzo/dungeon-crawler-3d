@@ -1,8 +1,11 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://csfar4kev74xx"]
 
-[ext_resource type="Script" path="res://plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cime2ajh1h35e" path="res://plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd" id="1_script"]
 [ext_resource type="Resource" path="res://demo/demo_config.tres" id="2_config"]
 
-[node name="DungeonGenerator" type="Node3D"]
+[node name="DungeonGenerator" type="Node3D" unique_id=12323142]
 script = ExtResource("1_script")
 config = ExtResource("2_config")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1459447886]
+transform = Transform3D(1, 0, 0, 0, 0.832873, 0.55346423, 0, -0.55346423, 0.832873, 0, 25.536753, 38.430817)

@@ -24,7 +24,7 @@ func get_connectors(room_scene: PackedScene) -> Array[Transform3D]:
 	var connectors: Array[Node] = _find_connectors(instance)
 	for connector: RoomConnector3D in connectors:
 		if connector:
-			transforms.append(connector.transform)
+			transforms.append(_get_relative_transform(connector, instance))
 
 	instance.free()
 	return transforms
@@ -63,3 +63,13 @@ func _find_connectors_recursive(node: Node, result: Array[Node]) -> void:
 
 	for child: Node in node.get_children():
 		_find_connectors_recursive(child, result)
+
+
+func _get_relative_transform(node: Node3D, root: Node) -> Transform3D:
+	var t: Transform3D = Transform3D.IDENTITY
+	var curr: Node = node
+	while curr and curr != root:
+		if curr is Node3D:
+			t = curr.transform * t
+		curr = curr.get_parent()
+	return t

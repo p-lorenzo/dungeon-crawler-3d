@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="DungeonConfig" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="DungeonConfig" format=3 uid="uid://btmt6rrghuiwt"]
 
-[ext_resource type="Script" path="res://plugins/dungeon_crawler_3d/resources/dungeon_config.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cgwax336qhkve" path="res://plugins/dungeon_crawler_3d/resources/room_data.gd" id="1_ru1tv"]
+[ext_resource type="Script" uid="uid://dtgogpktygfh2" path="res://plugins/dungeon_crawler_3d/resources/dungeon_config.gd" id="1_script"]
 [ext_resource type="Resource" path="res://demo/room_data/entrance_data.tres" id="2_entrance"]
 [ext_resource type="Resource" path="res://demo/room_data/boss_data.tres" id="3_boss"]
 [ext_resource type="Resource" path="res://demo/room_data/corridor_data.tres" id="4_corridor"]
@@ -9,16 +10,12 @@
 
 [resource]
 script = ExtResource("1_script")
-main_path_length = 5
-branch_count = 2
-branch_depth_min = 1
 branch_depth_max = 2
 room_count_min = 4
 room_count_max = 20
 random_seed = 12345
-max_generation_attempts = 10
-entrance_pool = Array[ExtResource("2_entrance")]([ExtResource("2_entrance")])
-boss_pool = Array[ExtResource("3_boss")]([ExtResource("3_boss")])
-corridor_pool = Array[ExtResource("4_corridor")]([ExtResource("4_corridor")])
-junction_pool = Array[ExtResource("5_junction")]([ExtResource("5_junction")])
-dead_end_pool = Array[ExtResource("6_deadend")]([ExtResource("6_deadend")])
+entrance_pool = Array[ExtResource("1_ru1tv")]([ExtResource("2_entrance")])
+boss_pool = Array[ExtResource("1_ru1tv")]([ExtResource("3_boss")])
+corridor_pool = Array[ExtResource("1_ru1tv")]([ExtResource("4_corridor")])
+junction_pool = Array[ExtResource("1_ru1tv")]([ExtResource("5_junction")])
+dead_end_pool = Array[ExtResource("1_ru1tv")]([ExtResource("6_deadend")])
