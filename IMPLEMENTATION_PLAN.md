@@ -62,7 +62,7 @@
 | GDScript exclusively | PASS | All planned files are `.gd` |
 | Godot 4.6 + GL Compatibility | PASS | `project.godot` confirms |
 | Jolt Physics | N/A | Plugin does not use physics |
-| Plugin isolation (`plugins/`) | PENDING | Constitution amendment needed for `addons/` → `plugins/` change |
+| Plugin isolation (`plugins/`) | PASS | Constitution amended to `plugins/dungeon_crawler_3d/` (v1.3.0) |
 | Static typing | PASS | Enforced by constitution, will be checked in T030 |
 | English-only committed content | PASS | All docs are English |
 
@@ -175,10 +175,10 @@ Follow `specs/001-procedural-dungeon-generator/quickstart.md` validation scenari
 
 ## Open Items
 
-1. **Constitution amendment**: Update `.specify/memory/constitution.md` to change plugin isolation path from `addons/DungeonCrawler3D/` to `plugins/dungeon_crawler_3d/`
-2. **ARCHITECTURE.md update**: Sync with `plan.md` — change `addons/DungeonCrawler3D/` references to `plugins/dungeon_crawler_3d/`
-3. **Spec status**: Update `spec.md` from `Status: Draft` to `Status: COMPLETE` after all 31 tasks are verified
-4. **Partial success signaling**: `contracts/generator-api.md` defers the partial-success contract decision; needs resolution during Phase 4/5
+1. ~~**Constitution amendment**: Update `.specify/memory/constitution.md` to change plugin isolation path from `addons/DungeonCrawler3D/` to `plugins/dungeon_crawler_3d/`~~ **RESOLVED**: Path updated to `plugins/dungeon_crawler_3d/`; version bumped to 1.3.0.
+2. ~~**ARCHITECTURE.md update**: Sync with `plan.md` — change `addons/DungeonCrawler3D/` references to `plugins/dungeon_crawler_3d/`~~ **RESOLVED**: File updated.
+3. ~~**Spec status**: Update `spec.md` from `Status: Draft` to `Status: COMPLETE` after all 31 tasks are verified~~ **RESOLVED**: `spec.md` already shows `Status: COMPLETE`.
+4. ~~**Partial success signaling**: `contracts/generator-api.md` defers the partial-success contract decision; needs resolution during Phase 4/5~~ **RESOLVED**: Added `generation_note` signal to `DungeonGenerator3D`; partial success emits `generation_note` before `generation_completed`. Contract finalized.
 
 ---
 

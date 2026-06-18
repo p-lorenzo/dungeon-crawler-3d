@@ -4,6 +4,7 @@ extends Node3D
 
 signal generation_completed(dungeon_root: Node3D)
 signal generation_failed(reason: String)
+signal generation_note(note: String)
 
 @export_category("Configuration")
 @export var config: DungeonConfig:
@@ -77,7 +78,7 @@ func generate() -> void:
 	_instantiate_rooms(graph)
 
 	if not builder.partial_success_note.is_empty():
-		print_rich("[color=yellow]DungeonGenerator: %s[/color]" % builder.partial_success_note)
+		generation_note.emit(builder.partial_success_note)
 
 	generation_completed.emit(_dungeon_root)
 

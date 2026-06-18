@@ -26,9 +26,9 @@
 
 **Purpose**: Plugin skeleton and registration — minimal structure so Godot recognizes the plugin.
 
-- [ ] T001 Create plugin directory structure: `plugins/dungeon_crawler_3d/`, `plugins/dungeon_crawler_3d/resources/`, `plugins/dungeon_crawler_3d/nodes/`, `plugins/dungeon_crawler_3d/core/`
-- [ ] T002 Create `plugins/dungeon_crawler_3d/plugin.cfg` with plugin metadata (name: "Dungeon Crawler 3D", description, author, version)
-- [ ] T003 Create `plugins/dungeon_crawler_3d/dungeon_crawler_3d.gd` — EditorPlugin entry script registering custom types (stub with `_enter_tree` / `_exit_tree`)
+- [x] T001 Create plugin directory structure: `plugins/dungeon_crawler_3d/`, `plugins/dungeon_crawler_3d/resources/`, `plugins/dungeon_crawler_3d/nodes/`, `plugins/dungeon_crawler_3d/core/`
+- [x] T002 Create `plugins/dungeon_crawler_3d/plugin.cfg` with plugin metadata (name: "Dungeon Crawler 3D", description, author, version)
+- [x] T003 Create `plugins/dungeon_crawler_3d/dungeon_crawler_3d.gd` — EditorPlugin entry script registering custom types (stub with `_enter_tree` / `_exit_tree`)
 
 ---
 
@@ -38,10 +38,10 @@
 
 **CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T004 [P] Create `RoomCategory` enum (ENTRANCE, BOSS, CORRIDOR, JUNCTION, DEAD_END) in `plugins/dungeon_crawler_3d/resources/room_data.gd`
-- [ ] T005 [P] Implement `RoomData` Resource class in `plugins/dungeon_crawler_3d/resources/room_data.gd` — fields: `room_scene: PackedScene`, `spawn_weight: float`, `category: int` (RoomCategory); with `@export` annotations for inspector visibility
-- [ ] T006 Implement `DungeonConfig` Resource class in `plugins/dungeon_crawler_3d/resources/dungeon_config.gd` — all 11 fields per data-model.md: `main_path_length`, `branch_count`, `branch_depth_min`, `branch_depth_max`, `room_count_min`, `room_count_max`, `random_seed`, `max_generation_attempts`, `entrance_pool`, `boss_pool`, `corridor_pool`, `junction_pool`, `dead_end_pool`; with `@export` annotations and validation in `_validate_property()` or init check
-- [ ] T007 Register DungeonConfig and RoomData as custom resources in EditorPlugin (`dungeon_crawler_3d.gd`) via `add_custom_resource_type()`
+- [x] T004 [P] Create `RoomCategory` enum (ENTRANCE, BOSS, CORRIDOR, JUNCTION, DEAD_END) in `plugins/dungeon_crawler_3d/resources/room_data.gd`
+- [x] T005 [P] Implement `RoomData` Resource class in `plugins/dungeon_crawler_3d/resources/room_data.gd` — fields: `room_scene: PackedScene`, `spawn_weight: float`, `category: int` (RoomCategory); with `@export` annotations for inspector visibility
+- [x] T006 Implement `DungeonConfig` Resource class in `plugins/dungeon_crawler_3d/resources/dungeon_config.gd` — all 11 fields per data-model.md: `main_path_length`, `branch_count`, `branch_depth_min`, `branch_depth_max`, `room_count_min`, `room_count_max`, `random_seed`, `max_generation_attempts`, `entrance_pool`, `boss_pool`, `corridor_pool`, `junction_pool`, `dead_end_pool`; with `@export` annotations and validation in `_validate_property()` or init check
+- [x] T007 Register DungeonConfig and RoomData as custom resources in EditorPlugin (`dungeon_crawler_3d.gd`) via `add_custom_resource_type()`
 
 **Checkpoint**: Data definitions ready — Godot Inspector can create, edit, and save DungeonConfig and RoomData resources.
 
@@ -55,14 +55,14 @@
 
 ### Implementation for User Story 1
 
-- [ ] T008 [P] [US1] Implement `RoomConnector3D` custom node in `plugins/dungeon_crawler_3d/nodes/room_connector_3d.gd` — extends `Node3D` with `@tool`; `@export var connection_type: String`; editor gizmo (sphere + arrow) for visibility in viewport
-- [ ] T009 [P] [US1] Implement `AABBManager` class in `plugins/dungeon_crawler_3d/core/aabb_collision.gd` — computes AABB from a room's PackedScene geometry; `check_overlap(aabb: AABB, placed_aabbs: Array[AABB]) -> bool`
-- [ ] T010 [P] [US1] Implement `DungeonGraph` class in `plugins/dungeon_crawler_3d/core/dungeon_graph.gd` — ref-counted object storing placements (RoomPlacement dicts) and edges (ConnectorPair dicts) per data-model.md; methods: `add_placement()`, `add_edge()`, `get_path()`
-- [ ] T011 [US1] Implement connector matching logic in `plugins/dungeon_crawler_3d/core/connector_matcher.gd` — function `find_matching_connector(candidate_room: RoomData, target_connector_type: String) -> int` (returns connector index or -1); free-alignment transform calculator `compute_alignment_transform(connector_a: Transform3D, connector_b: Transform3D) -> Transform3D`
-- [ ] T012 [US1] Implement `PathValidator` class in `plugins/dungeon_crawler_3d/core/path_validator.gd` — `validate_path(graph: DungeonGraph) -> bool` traverses from entrance to boss confirming connectivity
-- [ ] T013 [US1] Implement `DungeonBuilder` class in `plugins/dungeon_crawler_3d/core/dungeon_builder.gd` — generates a linear main path (no branches yet): selects entrance room → iteratively matches connectors → places corridor rooms → places boss room; produces a `DungeonLayout` (in-memory, per data-model.md) with AABB checks at each step; accepts DungeonConfig as input
-- [ ] T014 [US1] Implement `DungeonGenerator3D` custom node in `plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd` — extends `Node3D` with `@tool`; `@export var config: DungeonConfig`; `generate()` method: calls DungeonBuilder, instantiates resulting room PackedScenes as children with computed transforms, sets `owner` for packed scene serialization; `clear()` method: frees all generated children
-- [ ] T015 [US1] Register RoomConnector3D and DungeonGenerator3D as custom types in EditorPlugin (`dungeon_crawler_3d.gd`) via `add_custom_type()`
+- [x] T008 [P] [US1] Implement `RoomConnector3D` custom node in `plugins/dungeon_crawler_3d/nodes/room_connector_3d.gd` — extends `Node3D` with `@tool`; `@export var connection_type: String`; editor gizmo (sphere + arrow) for visibility in viewport
+- [x] T009 [P] [US1] Implement `AABBManager` class in `plugins/dungeon_crawler_3d/core/aabb_collision.gd` — computes AABB from a room's PackedScene geometry; `check_overlap(aabb: AABB, placed_aabbs: Array[AABB]) -> bool`
+- [x] T010 [P] [US1] Implement `DungeonGraph` class in `plugins/dungeon_crawler_3d/core/dungeon_graph.gd` — ref-counted object storing placements (RoomPlacement dicts) and edges (ConnectorPair dicts) per data-model.md; methods: `add_placement()`, `add_edge()`, `get_path()`
+- [x] T011 [US1] Implement connector matching logic in `plugins/dungeon_crawler_3d/core/connector_matcher.gd` — function `find_matching_connector(candidate_room: RoomData, target_connector_type: String) -> int` (returns connector index or -1); free-alignment transform calculator `compute_alignment_transform(connector_a: Transform3D, connector_b: Transform3D) -> Transform3D`
+- [x] T012 [US1] Implement `PathValidator` class in `plugins/dungeon_crawler_3d/core/path_validator.gd` — `validate_path(graph: DungeonGraph) -> bool` traverses from entrance to boss confirming connectivity
+- [x] T013 [US1] Implement `DungeonBuilder` class in `plugins/dungeon_crawler_3d/core/dungeon_builder.gd` — generates a linear main path (no branches yet): selects entrance room → iteratively matches connectors → places corridor rooms → places boss room; produces a `DungeonLayout` (in-memory, per data-model.md) with AABB checks at each step; accepts DungeonConfig as input
+- [x] T014 [US1] Implement `DungeonGenerator3D` custom node in `plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd` — extends `Node3D` with `@tool`; `@export var config: DungeonConfig`; `generate()` method: calls DungeonBuilder, instantiates resulting room PackedScenes as children with computed transforms, sets `owner` for packed scene serialization; `clear()` method: frees all generated children
+- [x] T015 [US1] Register RoomConnector3D and DungeonGenerator3D as custom types in EditorPlugin (`dungeon_crawler_3d.gd`) via `add_custom_type()`
 
 **Checkpoint**: Linear dungeon generation functional — entrance→corridor(s)→boss path works in editor without branches.
 

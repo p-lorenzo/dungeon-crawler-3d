@@ -25,17 +25,17 @@ All placement logic operates in memory before interacting with the `SceneTree`.
 
 ## 3. File System Structure
 
-The plugin must reside entirely within `addons/DungeonCrawler3D/`.
+The plugin must reside entirely within `plugins/dungeon_crawler_3d/`.
 
     dungeon-crawler-3d/
-    ├── addons/
-    │   └── DungeonCrawler3D/
+    ├── plugins/
+    │   └── dungeon_crawler_3d/
     │       ├── plugin.cfg                  # Godot plugin metadata
     │       ├── dungeon_crawler_3d.gd       # EditorPlugin script (setup and teardown)
     │       ├── core/                       # Decoupled core logic (algorithms, graphs, validation)
     │       ├── nodes/                      # Custom nodes exported in the editor (Generator, Connector)
     │       └── resources/                  # Custom Resources (e.g., DungeonSettings, RoomData)
-    ├── demo/                               # Test scenes and assets for development (outside the addon)
+    ├── demo/                               # Test scenes and assets for development (outside the plugin)
     └── project.godot
 
 ## 4. AI Agent Specifications (Speckit / OpenCode)

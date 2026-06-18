@@ -36,6 +36,19 @@ Emitted when dungeon generation fails.
 - The signal is emitted after cleanup. No partial dungeon remains in the SceneTree.
 - Possible `reason` values: `"Empty room pool"`, `"No entrance room configured"`, `"No boss room configured"`, `"Cannot satisfy main path length"`, `"Cannot satisfy branch count"`, `"Exhausted backtracking attempts"`, `"Missing PackedScene reference: <path>"`, `"No matching connectors found"`.
 
+### `generation_note(note: String)`
+
+Emitted for non-fatal informational messages during a successful generation.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `note` | `String` | Human-readable informational message. |
+
+**Contract**:
+- This signal is emitted BEFORE `generation_completed` when the generation succeeds but with caveats.
+- Emitted values include partial success notes (e.g., `"Placed 2 of 3 requested branches (limited by main path rooms)"`).
+- The dungeon is fully functional; this signal provides a programmatic hook for consumers to detect partial completion without parsing the graph.
+
 ---
 
 ## Public Methods
@@ -107,6 +120,4 @@ Removes all generated room instances from the SceneTree.
 | Empty entrance or boss pool | `generation_failed("No entrance/boss room configured")` |
 | Missing PackedScene reference | `generation_failed("Missing PackedScene reference: <path>")` — detected before generation starts |
 | Generation exhausts attempts | `generation_failed("Exhausted backtracking attempts")` |
-| Partial success (some branches not placed) | `generation_completed` with as many rooms as possible + `generation_failed` as secondary signal? **Decision deferred** — see note. |
-
-**Note on partial success**: The spec edge case says "place as many as possible and signal partial-success or fallback". The contract for this scenario is deferred to implementation. Options: (a) dual-signal (completion + a `generation_warning` signal), (b) `generation_completed` with a `partial_success: bool` property on the generator. Either way, the `dungeon_root` must contain a valid start→boss path.
+| Partial success (some branches not placed) | `generation_note("Placed X of Y requested branches...")` followed by `generation_completed(dungeon_root)` with as many rooms as possible. The `dungeon_root` always contains a valid start→boss path.
