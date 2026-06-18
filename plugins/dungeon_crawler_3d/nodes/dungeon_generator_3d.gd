@@ -25,6 +25,7 @@ signal generation_note(note: String)
 			_clear_button = false
 
 var _dungeon_root: Node3D
+var active_graph: DungeonGraph
 
 
 func generate() -> void:
@@ -65,6 +66,7 @@ func generate() -> void:
 
 	var builder: DungeonBuilder = DungeonBuilder.new()
 	var graph: DungeonGraph = builder.build(config)
+	active_graph = graph
 
 	if graph.placements.is_empty():
 		var reason: String = builder.failure_reason
@@ -88,6 +90,7 @@ func generate() -> void:
 
 
 func clear() -> void:
+	active_graph = null
 	if _dungeon_root:
 		if is_instance_valid(_dungeon_root):
 			_dungeon_root.queue_free()
@@ -125,11 +128,13 @@ func _instantiate_rooms(graph: DungeonGraph) -> void:
 		room_instance.transform = world_transform
 		room_instance.name = _room_name(room_data, category, _dungeon_root.get_child_count())
 
-		# Hook for locked doors inside the room
+		# Hook for locked doors and doorway/blocker templates inside the room
 		for child in room_instance.find_children("*", "RoomConnector3D", true, false):
 			var connector := child as RoomConnector3D
-			if connector and connector.is_locked:
-				_spawn_locked_door(connector)
+			if connector:
+				_spawn_doorway_or_blocker(connector, i, graph, room_instance)
+				if connector.is_locked:
+					_spawn_locked_door(connector)
 
 		# Hook for key spawning if assigned to this room placement
 		if graph.key_lock_assignments.has(i):
@@ -141,6 +146,44 @@ func _instantiate_rooms(graph: DungeonGraph) -> void:
 
 		if Engine.is_editor_hint():
 			room_instance.owner = get_tree().edited_scene_root
+
+
+func _spawn_doorway_or_blocker(connector: RoomConnector3D, room_index: int, graph: DungeonGraph, room_instance: Node3D) -> void:
+	var local_transform: Transform3D = _get_relative_transform(connector, room_instance)
+	var edge: Dictionary = graph.get_edge_for_connector(room_index, local_transform)
+
+	if edge.is_empty():
+		# Connector is unused (leads to void) -> Spawn Blocker
+		if connector.blocker_scene:
+			var blocker_instance: Node3D = connector.blocker_scene.instantiate() as Node3D
+			blocker_instance.transform = Transform3D.IDENTITY
+			connector.add_child(blocker_instance)
+			if Engine.is_editor_hint():
+				blocker_instance.owner = get_tree().edited_scene_root
+		else:
+			push_warning("DungeonGenerator: Blocker scene is missing/null on connector '%s' in room index %d" % [connector.name, room_index])
+	else:
+		# Connector is active -> Spawn Doorway (Only on the room with lower index to prevent duplicates)
+		var lower_index: int = min(edge.room_a_index, edge.room_b_index)
+		if room_index == lower_index:
+			if connector.doorway_scene:
+				var doorway_instance: Node3D = connector.doorway_scene.instantiate() as Node3D
+				doorway_instance.transform = Transform3D.IDENTITY
+				connector.add_child(doorway_instance)
+				if Engine.is_editor_hint():
+					doorway_instance.owner = get_tree().edited_scene_root
+			else:
+				push_warning("DungeonGenerator: Doorway scene is missing/null on connector '%s' in room index %d" % [connector.name, room_index])
+
+
+func _get_relative_transform(node: Node3D, root: Node) -> Transform3D:
+	var t: Transform3D = Transform3D.IDENTITY
+	var curr: Node = node
+	while curr and curr != root:
+		if curr is Node3D:
+			t = curr.transform * t
+		curr = curr.get_parent()
+	return t
 
 
 func _spawn_locked_door(connector: RoomConnector3D) -> void:

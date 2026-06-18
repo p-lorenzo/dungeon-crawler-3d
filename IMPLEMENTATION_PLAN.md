@@ -15,7 +15,7 @@
 | **Godot project scaffold** | DONE | `project.godot`, `icon.svg` exist; Jolt Physics, GL Compatibility configured |
 | **001: Procedural Dungeon Generator** | DONE | All 31 tasks (MVP, topology control, editor workflow, and polish) are fully implemented and verified in the demo scene. |
 | **002: Lock & Key Puzzle System** | **DONE** | All 8 tasks (T032–T039) implemented, integrating KeySpawnPoint3D, locked connectors, and KeyLockManager solver. |
-| **003: Doorway Blocker & Prefab Adapters** | **PLANNED** | Feature specification exists. Active doorway and unused blocker scene instantiations are not implemented; connections currently lead directly to the void. |
+| **003: Doorway Blocker & Prefab Adapters** | **DONE** | All 6 tasks (T040–T045) implemented, spawning active doorway scenes on lower graph index room and blocker scenes on unused connectors. |
 | **004: Prop Randomizer & Clamping** | **PLANNED** | Feature specification exists. Prop randomization placeholders and global limits/clamping do not exist in the codebase. |
 | **005: NavMesh Baking Adapter** | **PLANNED** | Feature specification exists. The codebase has no adapter node to listen for generation signals and rebuild Godot's `NavigationRegion3D` paths. |
 
@@ -37,11 +37,11 @@
 | Phase 5: Editor Workflow | T021–T026 (6) | **Complete** |
 | Phase 6: Generator Polish | T027–T031 (5) | **Complete** |
 | **Phase 7: Lock & Key System (002)** | T032–T039 (8) | **Complete** |
-| **Phase 8: Doorway Blockers (003)** | T040–T045 (6) | **PLANNED** |
+| **Phase 8: Doorway Blockers (003)** | T040–T045 (6) | **Complete** |
 | **Phase 9: Prop Randomizer (004)** | T046–T052 (7) | **PLANNED** |
 | **Phase 10: NavMesh Baking Adapter (005)** | T053–T058 (6) | **PLANNED** |
 | **Phase 11: E2E & Final Verification** | T059–T061 (3) | **PLANNED** |
-| **Total** | **61 tasks** | **39/61 complete** |
+| **Total** | **61 tasks** | **45/61 complete** |
 
 ---
 

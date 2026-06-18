@@ -78,3 +78,12 @@ func clear() -> void:
 	branches.clear()
 	total_rooms = 0
 	key_lock_assignments.clear()
+
+
+func get_edge_for_connector(room_index: int, connector_local_transform: Transform3D) -> Dictionary:
+	for edge: Dictionary in edges:
+		if edge.room_a_index == room_index and edge.connector_a_local.is_equal_approx(connector_local_transform):
+			return edge
+		if edge.room_b_index == room_index and edge.connector_b_local.is_equal_approx(connector_local_transform):
+			return edge
+	return {}

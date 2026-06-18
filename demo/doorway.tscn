@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://ddoorway123"]
+
+[sub_resource type="BoxMesh" id="mesh_post"]
+size = Vector3(0.5, 3.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="material_doorway"]
+albedo_color = Color(0.7, 0.6, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="mesh_lintel"]
+size = Vector3(4, 0.5, 0.5)
+
+[node name="Doorway" type="Node3D"]
+
+[node name="LeftPost" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 1.75, 0)
+mesh = SubResource("mesh_post")
+surface_material_override/0 = SubResource("material_doorway")
+
+[node name="RightPost" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 1.75, 0)
+mesh = SubResource("mesh_post")
+surface_material_override/0 = SubResource("material_doorway")
+
+[node name="Lintel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+mesh = SubResource("mesh_lintel")
+surface_material_override/0 = SubResource("material_doorway")

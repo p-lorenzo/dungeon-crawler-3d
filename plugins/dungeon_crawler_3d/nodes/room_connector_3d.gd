@@ -20,6 +20,9 @@ extends Node3D
 		if Engine.is_editor_hint():
 			update_gizmos()
 
+@export var doorway_scene: PackedScene
+@export var blocker_scene: PackedScene
+
 
 func _get_gizmo_color() -> Color:
 	if is_locked:
