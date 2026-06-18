@@ -6,16 +6,12 @@
 [ext_resource type="Resource" path="res://demo/room_data/boss_data.tres" id="3_boss"]
 [ext_resource type="Resource" path="res://demo/room_data/corridor_data.tres" id="4_corridor"]
 [ext_resource type="Resource" path="res://demo/room_data/junction_data.tres" id="5_junction"]
+[ext_resource type="Script" uid="uid://bxor1vncly74y" path="res://plugins/dungeon_crawler_3d/resources/tile_injection_rule.gd" id="6_5isqc"]
 [ext_resource type="Resource" path="res://demo/room_data/dead_end_data.tres" id="6_deadend"]
 
 [resource]
 script = ExtResource("1_script")
-main_path_length = 8
-branch_count = 4
-branch_depth_max = 4
-room_count_min = 4
-room_count_max = 20
-random_seed = 123456
+random_seed = 12345
 entrance_pool = Array[ExtResource("1_ru1tv")]([ExtResource("2_entrance")])
 boss_pool = Array[ExtResource("1_ru1tv")]([ExtResource("3_boss")])
 corridor_pool = Array[ExtResource("1_ru1tv")]([ExtResource("4_corridor")])
