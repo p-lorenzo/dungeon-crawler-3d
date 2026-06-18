@@ -6,6 +6,7 @@ var edges: Array[Dictionary] = []
 var main_path: Array[int] = []
 var branches: Array[Array] = []
 var total_rooms: int = 0
+var key_lock_assignments: Dictionary = {}
 
 
 func add_placement(placement: Dictionary) -> int:
@@ -76,3 +77,4 @@ func clear() -> void:
 	main_path.clear()
 	branches.clear()
 	total_rooms = 0
+	key_lock_assignments.clear()

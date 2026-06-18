@@ -115,7 +115,8 @@ func _generate_dungeon_root() -> void:
 
 
 func _instantiate_rooms(graph: DungeonGraph) -> void:
-	for placement: Dictionary in graph.placements:
+	for i: int in range(graph.placements.size()):
+		var placement: Dictionary = graph.placements[i]
 		var room_data: RoomData = placement.room_data
 		var world_transform: Transform3D = placement.world_transform
 		var category: int = placement.category
@@ -124,10 +125,82 @@ func _instantiate_rooms(graph: DungeonGraph) -> void:
 		room_instance.transform = world_transform
 		room_instance.name = _room_name(room_data, category, _dungeon_root.get_child_count())
 
+		# Hook for locked doors inside the room
+		for child in room_instance.find_children("*", "RoomConnector3D", true, false):
+			var connector := child as RoomConnector3D
+			if connector and connector.is_locked:
+				_spawn_locked_door(connector)
+
+		# Hook for key spawning if assigned to this room placement
+		if graph.key_lock_assignments.has(i):
+			var assignments: Array = graph.key_lock_assignments[i]
+			for assignment: KeyLockAssignment in assignments:
+				_spawn_key_item(room_instance, assignment)
+
 		_dungeon_root.add_child(room_instance)
 
 		if Engine.is_editor_hint():
 			room_instance.owner = get_tree().edited_scene_root
+
+
+func _spawn_locked_door(connector: RoomConnector3D) -> void:
+	var key_id: String = connector.key_id
+	var door_scene: PackedScene = null
+	if config and config.locked_door_scenes.has(key_id):
+		door_scene = config.locked_door_scenes[key_id]
+
+	if door_scene:
+		var door_instance: Node3D = door_scene.instantiate()
+		connector.add_child(door_instance)
+		if Engine.is_editor_hint():
+			door_instance.owner = get_tree().edited_scene_root
+	else:
+		# Fallback: Spawn a visible placeholder (e.g. a red/magenta BoxMesh)
+		var mesh_instance := MeshInstance3D.new()
+		var box_mesh := BoxMesh.new()
+		box_mesh.size = Vector3(1.5, 2.5, 0.2)
+		mesh_instance.mesh = box_mesh
+
+		var mat := StandardMaterial3D.new()
+		mat.albedo_color = Color.MAGENTA
+		mesh_instance.material_override = mat
+
+		connector.add_child(mesh_instance)
+		if Engine.is_editor_hint():
+			mesh_instance.owner = get_tree().edited_scene_root
+
+
+func _spawn_key_item(room_instance: Node3D, assignment: KeyLockAssignment) -> void:
+	var spawn_point_node = room_instance.get_node_or_null(assignment.spawn_point_path)
+	if not spawn_point_node:
+		return
+
+	var key_id: String = assignment.key_id
+	var key_scene: PackedScene = null
+	if config and config.key_scenes.has(key_id):
+		key_scene = config.key_scenes[key_id]
+
+	if key_scene:
+		var key_instance: Node3D = key_scene.instantiate()
+		spawn_point_node.add_child(key_instance)
+		if Engine.is_editor_hint():
+			key_instance.owner = get_tree().edited_scene_root
+	else:
+		# Fallback: Spawn a visible placeholder (e.g. a small magenta sphere)
+		var mesh_instance := MeshInstance3D.new()
+		var sphere_mesh := SphereMesh.new()
+		sphere_mesh.radius = 0.2
+		sphere_mesh.height = 0.4
+		mesh_instance.mesh = sphere_mesh
+
+		var mat := StandardMaterial3D.new()
+		mat.albedo_color = Color.MAGENTA
+		mesh_instance.material_override = mat
+
+		spawn_point_node.add_child(mesh_instance)
+		if Engine.is_editor_hint():
+			mesh_instance.owner = get_tree().edited_scene_root
+
 
 
 func _room_name(room_data: RoomData, category: int, index: int) -> String:

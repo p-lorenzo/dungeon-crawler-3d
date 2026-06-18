@@ -34,3 +34,8 @@ extends Resource
 @export var corridor_pool: Array[RoomData] = []
 @export var junction_pool: Array[RoomData] = []
 @export var dead_end_pool: Array[RoomData] = []
+
+@export_category("Lock & Key")
+@export var key_scenes: Dictionary = {} # String (key_id) -> PackedScene
+@export var locked_door_scenes: Dictionary = {} # String (key_id) -> PackedScene
+

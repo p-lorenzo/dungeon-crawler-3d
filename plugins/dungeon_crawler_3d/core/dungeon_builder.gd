@@ -73,6 +73,23 @@ func build(config: DungeonConfig) -> DungeonGraph:
 		failure_reason = "Generated dungeon has no valid entrance-to-boss path"
 		return _graph
 
+	var manager: KeyLockManager = KeyLockManager.new()
+	manager.populate_cache(_config)
+	var assignments: Dictionary = manager.allocate_keys(_graph)
+	var has_locks: bool = false
+	for edge: Dictionary in _graph.edges:
+		if manager._is_edge_locked(_graph, edge):
+			has_locks = true
+			break
+
+	if has_locks and assignments.is_empty():
+		_selector.reset()
+		failure_reason = "Failed to allocate keys to spawn points (missing spawn points or unsolvable lock layout)"
+		_graph.clear()
+		return _graph
+
+	_graph.key_lock_assignments = assignments
+
 	if branches_placed < branches_requested:
 		partial_success_note = "Placed %d of %d requested branches (limited by main path rooms)" % [branches_placed, branches_requested]
 
@@ -83,6 +100,7 @@ func build(config: DungeonConfig) -> DungeonGraph:
 
 	_selector.reset()
 	return _graph
+
 
 
 func _build_main_path() -> bool:

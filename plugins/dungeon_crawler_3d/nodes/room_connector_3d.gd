@@ -2,10 +2,28 @@
 class_name RoomConnector3D
 extends Node3D
 
-@export var connection_type: String = ""
+@export var connection_type: String = "":
+	set(value):
+		connection_type = value
+		if Engine.is_editor_hint():
+			update_gizmos()
+
+@export var is_locked: bool = false:
+	set(value):
+		is_locked = value
+		if Engine.is_editor_hint():
+			update_gizmos()
+
+@export var key_id: String = "":
+	set(value):
+		key_id = value
+		if Engine.is_editor_hint():
+			update_gizmos()
 
 
 func _get_gizmo_color() -> Color:
+	if is_locked:
+		return Color.MAGENTA
 	match connection_type:
 		"":
 			return Color.GRAY
