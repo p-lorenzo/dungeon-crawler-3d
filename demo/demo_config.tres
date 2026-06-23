@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="DungeonConfig" format=3 uid="uid://btmt6rrghuiwt"]
 
-[ext_resource type="Script" uid="uid://cgwax336qhkve" path="res://plugins/dungeon_crawler_3d/resources/room_data.gd" id="1_ru1tv"]
-[ext_resource type="Script" uid="uid://dtgogpktygfh2" path="res://plugins/dungeon_crawler_3d/resources/dungeon_config.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cgwax336qhkve" path="res://addons/dungeon_crawler_3d/resources/room_data.gd" id="1_ru1tv"]
+[ext_resource type="Script" uid="uid://dtgogpktygfh2" path="res://addons/dungeon_crawler_3d/resources/dungeon_config.gd" id="1_script"]
 [ext_resource type="Resource" path="res://demo/room_data/entrance_data.tres" id="2_entrance"]
 [ext_resource type="Resource" path="res://demo/room_data/boss_data.tres" id="3_boss"]
 [ext_resource type="Resource" path="res://demo/room_data/corridor_data.tres" id="4_corridor"]
 [ext_resource type="Resource" path="res://demo/room_data/junction_data.tres" id="5_junction"]
-[ext_resource type="Script" uid="uid://bxor1vncly74y" path="res://plugins/dungeon_crawler_3d/resources/tile_injection_rule.gd" id="6_5isqc"]
+[ext_resource type="Script" uid="uid://bxor1vncly74y" path="res://addons/dungeon_crawler_3d/resources/tile_injection_rule.gd" id="6_5isqc"]
 [ext_resource type="Resource" path="res://demo/room_data/dead_end_data.tres" id="6_deadend"]
 
 [resource]

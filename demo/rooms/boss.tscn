@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bis2t3rtkglrq"]
 
-[ext_resource type="Script" uid="uid://dq43clq5i5hbo" path="res://plugins/dungeon_crawler_3d/nodes/room_connector_3d.gd" id="1_connector"]
+[ext_resource type="Script" uid="uid://dq43clq5i5hbo" path="res://addons/dungeon_crawler_3d/nodes/room_connector_3d.gd" id="1_connector"]
 [ext_resource type="PackedScene" uid="uid://ddoorway123" path="res://demo/doorway.tscn" id="2_doorway"]
 [ext_resource type="PackedScene" uid="uid://dblocker123" path="res://demo/blocker.tscn" id="3_blocker"]
 

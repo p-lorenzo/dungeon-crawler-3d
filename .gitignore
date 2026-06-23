@@ -1,7 +1,8 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
-/addons/
+/addons/*
+!/addons/dungeon_crawler_3d/
 
 # Ralph Wiggum
 logs/*

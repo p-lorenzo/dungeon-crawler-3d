@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-const RoomConnectorGizmoPluginScript: Script = preload("res://plugins/dungeon_crawler_3d/nodes/room_connector_gizmo_plugin.gd")
+const RoomConnectorGizmoPluginScript: Script = preload("res://addons/dungeon_crawler_3d/nodes/room_connector_gizmo_plugin.gd")
 
 var _gizmo_plugin: EditorNode3DGizmoPlugin
 

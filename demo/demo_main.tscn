@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://demo/demo_main.gd" id="1_main_script"]
 [ext_resource type="PackedScene" uid="uid://cplayer123" path="res://demo/player/player.tscn" id="2_player_scene"]
-[ext_resource type="Script" path="res://plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd" id="3_generator_script"]
+[ext_resource type="Script" path="res://addons/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd" id="3_generator_script"]
 [ext_resource type="Resource" uid="uid://btmt6rrghuiwt" path="res://demo/demo_config.tres" id="4_config"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_main"]

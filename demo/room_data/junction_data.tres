@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="RoomData" load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://plugins/dungeon_crawler_3d/resources/room_data.gd" id="1_script"]
+[ext_resource type="Script" path="res://addons/dungeon_crawler_3d/resources/room_data.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://demo/rooms/junction.tscn" id="2_scene"]
 
 [resource]

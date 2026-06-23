@@ -1,7 +1,7 @@
 @tool
 extends SceneTree
 
-const TileInjectionRuleScript = preload("res://plugins/dungeon_crawler_3d/resources/tile_injection_rule.gd")
+const TileInjectionRuleScript = preload("res://addons/dungeon_crawler_3d/resources/tile_injection_rule.gd")
 
 func _initialize() -> void:
 	print("--- STARTING TILE INJECTION TESTS ---")

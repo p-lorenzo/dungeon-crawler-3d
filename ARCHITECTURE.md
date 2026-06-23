@@ -56,11 +56,11 @@ All placement logic operates in memory before interacting with the `SceneTree`.
 
 ## 3. File System Structure
 
-The plugin resides entirely within `plugins/dungeon_crawler_3d/`.
+The plugin resides entirely within `addons/dungeon_crawler_3d/`.
 
 ```
 dungeon-crawler-3d/
-├── plugins/
+├── addons/
 │   └── dungeon_crawler_3d/
 │       ├── core/                           # Decoupled core logic (algorithms, graphs, validation)
 │       │   ├── aabb_collision.gd           # Logical collision box calculations (AABBManager)

@@ -1,8 +1,8 @@
 @tool
 extends SceneTree
 
-const RoomConnector3DScript: Script = preload("res://plugins/dungeon_crawler_3d/nodes/room_connector_3d.gd")
-const KeySpawnPoint3DScript: Script = preload("res://plugins/dungeon_crawler_3d/nodes/key_spawn_point_3d.gd")
+const RoomConnector3DScript: Script = preload("res://addons/dungeon_crawler_3d/nodes/room_connector_3d.gd")
+const KeySpawnPoint3DScript: Script = preload("res://addons/dungeon_crawler_3d/nodes/key_spawn_point_3d.gd")
 
 func _initialize() -> void:
 	print("--- STARTING LOCK & KEY TESTS ---")
