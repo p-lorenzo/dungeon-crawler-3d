@@ -13,3 +13,12 @@ PROMPT_plan.md
 .response_analysis
 completion_log/*.png
 !completion_log/.gitkeep
+
+# Build artifacts
+dist/
+
+# AI / dev tooling — purged from history
+.agents/
+.commandcode/
+.opencode/
+.specify/
