@@ -7,10 +7,91 @@
 [sub_resource type="BoxMesh" id="box_deadend"]
 size = Vector3(3, 3, 3)
 
+[sub_resource type="StandardMaterial3D" id="mat_floor"]
+albedo_color = Color(0.3, 0.3, 0.35, 1)
+
+[sub_resource type="BoxMesh" id="mesh_floor"]
+size = Vector3(3, 0.1, 3)
+
+[sub_resource type="BoxShape3D" id="shape_floor"]
+size = Vector3(3, 0.1, 3)
+
+[sub_resource type="StandardMaterial3D" id="mat_wall"]
+albedo_color = Color(0.6, 0.6, 0.6, 1)
+
+[sub_resource type="BoxMesh" id="mesh_wall_side"]
+size = Vector3(0.1, 2.8, 3)
+
+[sub_resource type="BoxShape3D" id="shape_wall_side"]
+size = Vector3(0.1, 2.8, 3)
+
+[sub_resource type="BoxMesh" id="mesh_wall_back"]
+size = Vector3(3, 2.8, 0.1)
+
+[sub_resource type="BoxShape3D" id="shape_wall_back"]
+size = Vector3(3, 2.8, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="mat_ceiling"]
+albedo_color = Color(0.5, 0.5, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="mesh_ceiling"]
+size = Vector3(3, 0.1, 3)
+
+[sub_resource type="BoxShape3D" id="shape_ceiling"]
+size = Vector3(3, 0.1, 3)
+
 [node name="DeadEndRoom" type="Node3D" unique_id=898145102]
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=1456583741]
+visible = false
 mesh = SubResource("box_deadend")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.45, 0)
+mesh = SubResource("mesh_floor")
+surface_material_override/0 = SubResource("mat_floor")
+
+[node name="Ceiling" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+mesh = SubResource("mesh_ceiling")
+surface_material_override/0 = SubResource("mat_ceiling")
+
+[node name="LeftWall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 0, 0)
+mesh = SubResource("mesh_wall_side")
+surface_material_override/0 = SubResource("mat_wall")
+
+[node name="RightWall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45, 0, 0)
+mesh = SubResource("mesh_wall_side")
+surface_material_override/0 = SubResource("mat_wall")
+
+[node name="BackWall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.45)
+mesh = SubResource("mesh_wall_back")
+surface_material_override/0 = SubResource("mat_wall")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape_Floor" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.45, 0)
+shape = SubResource("shape_floor")
+
+[node name="CollisionShape_Ceiling" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+shape = SubResource("shape_ceiling")
+
+[node name="CollisionShape_LeftWall" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 0, 0)
+shape = SubResource("shape_wall_side")
+
+[node name="CollisionShape_RightWall" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45, 0, 0)
+shape = SubResource("shape_wall_side")
+
+[node name="CollisionShape_BackWall" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.45)
+shape = SubResource("shape_wall_back")
 
 [node name="EntryConnector" type="Node3D" parent="." unique_id=1237082136]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, -1.5, -1.5)
