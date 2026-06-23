@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://demomain123"]
+
+[ext_resource type="Script" path="res://demo/demo_main.gd" id="1_main_script"]
+[ext_resource type="PackedScene" uid="uid://cplayer123" path="res://demo/player/player.tscn" id="2_player_scene"]
+[ext_resource type="Script" path="res://plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd" id="3_generator_script"]
+[ext_resource type="Resource" uid="uid://btmt6rrghuiwt" path="res://demo/demo_config.tres" id="4_config"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_main"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("ProceduralSkyMaterial_main")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+tonemap_mode = 2
+glow_enabled = true
+ambient_light_color = Color(0.2, 0.2, 0.25, 1)
+ambient_light_sky_contribution = 0.5
+
+[node name="DemoMain" type="Node3D"]
+script = ExtResource("1_main_script")
+player_scene = ExtResource("2_player_scene")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 10, 0)
+light_color = Color(0.95, 0.9, 0.8, 1)
+shadow_enabled = true
+
+[node name="DungeonGenerator" type="Node3D" parent="." unique_id=12323142]
+script = ExtResource("3_generator_script")
+config = ExtResource("4_config")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MenuPanel" type="PanelContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_top = 20.0
+offset_right = 250.0
+offset_bottom = 150.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MenuPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MenuPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Title" type="Label" parent="CanvasLayer/Control/MenuPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "DUNGEON CRAWLER 3D DEMO"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer/Control/MenuPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Ready to generate"
+horizontal_alignment = 1
+
+[node name="GenerateButton" type="Button" parent="CanvasLayer/Control/MenuPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Generate New Dungeon"
+
+[node name="ControlsPanel" type="PanelContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -180.0
+offset_right = 220.0
+offset_bottom = -20.0
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/ControlsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/ControlsPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="ControlsTitle" type="Label" parent="CanvasLayer/Control/ControlsPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Controls"
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Control/ControlsPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Movement" type="Label" parent="CanvasLayer/Control/ControlsPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "- WASD: Move"
+
+[node name="Look" type="Label" parent="CanvasLayer/Control/ControlsPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "- Mouse: Look"
+
+[node name="Jump" type="Label" parent="CanvasLayer/Control/ControlsPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "- Space: Jump"
+
+[node name="Release" type="Label" parent="CanvasLayer/Control/ControlsPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "- ESC: Show Cursor"
+
+[node name="Capture" type="Label" parent="CanvasLayer/Control/ControlsPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "- Left Click: Capture Cursor"
