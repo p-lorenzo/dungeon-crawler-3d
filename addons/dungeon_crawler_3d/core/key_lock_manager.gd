@@ -196,24 +196,22 @@ func _search_allocation(
 		var data_a: Dictionary = _cache.get(room_a.room_data.room_scene, {})
 		if not data_a.is_empty():
 			var connectors: Array = data_a.get("connectors", [])
-			for idx: int in range(connectors.size()):
-				var conn: Dictionary = connectors[idx] as Dictionary
-				if conn.transform.is_equal_approx(edge.connector_a_local) and conn.is_locked:
+			if edge.connector_a_index >= 0 and edge.connector_a_index < connectors.size():
+				var conn: Dictionary = connectors[edge.connector_a_index] as Dictionary
+				if conn.is_locked:
 					connector_room_idx = edge.room_a_index
-					connector_idx_in_room = idx
-					break
+					connector_idx_in_room = edge.connector_a_index
 
 		if connector_room_idx == -1:
 			var room_b: Dictionary = graph.placements[edge.room_b_index]
 			var data_b: Dictionary = _cache.get(room_b.room_data.room_scene, {})
 			if not data_b.is_empty():
 				var connectors: Array = data_b.get("connectors", [])
-				for idx: int in range(connectors.size()):
-					var conn: Dictionary = connectors[idx] as Dictionary
-					if conn.transform.is_equal_approx(edge.connector_b_local) and conn.is_locked:
+				if edge.connector_b_index >= 0 and edge.connector_b_index < connectors.size():
+					var conn: Dictionary = connectors[edge.connector_b_index] as Dictionary
+					if conn.is_locked:
 						connector_room_idx = edge.room_b_index
-						connector_idx_in_room = idx
-						break
+						connector_idx_in_room = edge.connector_b_index
 
 		for cand: Dictionary in candidates:
 			allocated_spawn_keys[cand.spawn_key] = true
@@ -243,18 +241,18 @@ func _is_edge_locked(graph: DungeonGraph, edge: Dictionary) -> bool:
 	var data_a: Dictionary = _cache.get(room_a.room_data.room_scene, {})
 	if not data_a.is_empty():
 		var connectors: Array = data_a.get("connectors", [])
-		for conn_val: Variant in connectors:
-			var conn: Dictionary = conn_val as Dictionary
-			if conn.transform.is_equal_approx(edge.connector_a_local) and conn.is_locked:
+		if edge.connector_a_index >= 0 and edge.connector_a_index < connectors.size():
+			var conn: Dictionary = connectors[edge.connector_a_index] as Dictionary
+			if conn.is_locked:
 				return true
 
 	var room_b: Dictionary = graph.placements[edge.room_b_index]
 	var data_b: Dictionary = _cache.get(room_b.room_data.room_scene, {})
 	if not data_b.is_empty():
 		var connectors: Array = data_b.get("connectors", [])
-		for conn_val: Variant in connectors:
-			var conn: Dictionary = conn_val as Dictionary
-			if conn.transform.is_equal_approx(edge.connector_b_local) and conn.is_locked:
+		if edge.connector_b_index >= 0 and edge.connector_b_index < connectors.size():
+			var conn: Dictionary = connectors[edge.connector_b_index] as Dictionary
+			if conn.is_locked:
 				return true
 
 	return false
@@ -265,18 +263,18 @@ func _get_edge_key_id(graph: DungeonGraph, edge: Dictionary) -> String:
 	var data_a: Dictionary = _cache.get(room_a.room_data.room_scene, {})
 	if not data_a.is_empty():
 		var connectors: Array = data_a.get("connectors", [])
-		for conn_val: Variant in connectors:
-			var conn: Dictionary = conn_val as Dictionary
-			if conn.transform.is_equal_approx(edge.connector_a_local) and conn.is_locked:
+		if edge.connector_a_index >= 0 and edge.connector_a_index < connectors.size():
+			var conn: Dictionary = connectors[edge.connector_a_index] as Dictionary
+			if conn.is_locked:
 				return conn.key_id as String
 
 	var room_b: Dictionary = graph.placements[edge.room_b_index]
 	var data_b: Dictionary = _cache.get(room_b.room_data.room_scene, {})
 	if not data_b.is_empty():
 		var connectors: Array = data_b.get("connectors", [])
-		for conn_val: Variant in connectors:
-			var conn: Dictionary = conn_val as Dictionary
-			if conn.transform.is_equal_approx(edge.connector_b_local) and conn.is_locked:
+		if edge.connector_b_index >= 0 and edge.connector_b_index < connectors.size():
+			var conn: Dictionary = connectors[edge.connector_b_index] as Dictionary
+			if conn.is_locked:
 				return conn.key_id as String
 
 	return ""

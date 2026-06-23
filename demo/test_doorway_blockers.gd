@@ -60,9 +60,9 @@ func run_tests() -> bool:
 		var connectors: Array[Node] = []
 		_find_connectors_recursive(room_node, connectors)
 
-		for connector: RoomConnector3D in connectors:
-			var local_transform: Transform3D = _get_relative_transform(connector, room_node)
-			var edge: Dictionary = graph.get_edge_for_connector(i, local_transform)
+		for connector_idx: int in range(connectors.size()):
+			var connector: RoomConnector3D = connectors[connector_idx] as RoomConnector3D
+			var edge: Dictionary = graph.get_edge_for_connector(i, connector_idx)
 
 			if edge.is_empty():
 				# Connector leads to void -> Must have exactly 1 child, which is a blocker

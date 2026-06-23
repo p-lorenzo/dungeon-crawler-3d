@@ -200,8 +200,8 @@ func _instantiate_rooms(graph: DungeonGraph, prop_manager: DungeonPropManager) -
 
 
 func _spawn_doorway_or_blocker(connector: RoomConnector3D, room_index: int, graph: DungeonGraph, room_instance: Node3D) -> void:
-	var local_transform: Transform3D = _get_relative_transform(connector, room_instance)
-	var edge: Dictionary = graph.get_edge_for_connector(room_index, local_transform)
+	var connector_index: int = _get_connector_index(connector, room_instance)
+	var edge: Dictionary = graph.get_edge_for_connector(room_index, connector_index)
 
 	if edge.is_empty():
 		# Connector is unused (leads to void) -> Spawn Blocker
@@ -235,6 +235,16 @@ func _get_relative_transform(node: Node3D, root: Node) -> Transform3D:
 			t = curr.transform * t
 		curr = curr.get_parent()
 	return t
+
+
+func _get_connector_index(connector: RoomConnector3D, room_instance: Node3D) -> int:
+	var local_transform: Transform3D = _get_relative_transform(connector, room_instance)
+	var matcher := ConnectorMatcher.new()
+	var connector_list: Array[Transform3D] = matcher.get_connectors_from_instance(room_instance)
+	for i: int in range(connector_list.size()):
+		if connector_list[i].is_equal_approx(local_transform):
+			return i
+	return -1
 
 
 func _spawn_locked_door(connector: RoomConnector3D) -> void:

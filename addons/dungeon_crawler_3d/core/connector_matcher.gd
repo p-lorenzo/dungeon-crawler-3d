@@ -19,14 +19,17 @@ func find_matching_connector(room_scene: PackedScene, target_connector_type: Str
 
 func get_connectors(room_scene: PackedScene) -> Array[Transform3D]:
 	var instance: Node = room_scene.instantiate()
-	var transforms: Array[Transform3D] = []
+	var transforms: Array[Transform3D] = get_connectors_from_instance(instance)
+	instance.free()
+	return transforms
 
-	var connectors: Array[Node] = _find_connectors(instance)
+
+func get_connectors_from_instance(node: Node) -> Array[Transform3D]:
+	var transforms: Array[Transform3D] = []
+	var connectors: Array[Node] = _find_connectors(node)
 	for connector: RoomConnector3D in connectors:
 		if connector:
-			transforms.append(_get_relative_transform(connector, instance))
-
-	instance.free()
+			transforms.append(_get_relative_transform(connector, node))
 	return transforms
 
 

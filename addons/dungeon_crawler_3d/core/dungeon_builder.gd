@@ -266,8 +266,8 @@ func _place_path_node_recursive(depth: int) -> bool:
 		var edge: Dictionary = {
 			room_a_index = prev_idx,
 			room_b_index = _graph.placements.size() - 1,
-			connector_a_local = _get_connector_local_transform(prev_placement.room_data.room_scene, forward_connector_idx),
-			connector_b_local = candidate_connector_local,
+			connector_a_index = forward_connector_idx,
+			connector_b_index = match_idx,
 			connection_type = forward_type
 		}
 		_graph.add_edge(edge)
@@ -327,8 +327,8 @@ func _place_path_node_recursive(depth: int) -> bool:
 		var edge: Dictionary = {
 			room_a_index = prev_idx,
 			room_b_index = _graph.placements.size() - 1,
-			connector_a_local = _get_connector_local_transform(prev_placement.room_data.room_scene, forward_connector_idx),
-			connector_b_local = candidate_connector_local,
+			connector_a_index = forward_connector_idx,
+			connector_b_index = match_idx,
 			connection_type = forward_type
 		}
 		_graph.add_edge(edge)
@@ -468,8 +468,8 @@ func _place_branch_node_recursive(current_parent_idx: int, branch_placement_indi
 		var edge: Dictionary = {
 			room_a_index = current_parent_idx,
 			room_b_index = new_room_idx,
-			connector_a_local = _get_connector_local_transform(parent_placement.room_data.room_scene, forward_connector_idx),
-			connector_b_local = candidate_connector_local,
+			connector_a_index = forward_connector_idx,
+			connector_b_index = match_idx,
 			connection_type = forward_type
 		}
 		_graph.add_edge(edge)
@@ -530,8 +530,8 @@ func _place_branch_node_recursive(current_parent_idx: int, branch_placement_indi
 		var edge: Dictionary = {
 			room_a_index = current_parent_idx,
 			room_b_index = new_room_idx,
-			connector_a_local = _get_connector_local_transform(parent_placement.room_data.room_scene, forward_connector_idx),
-			connector_b_local = candidate_connector_local,
+			connector_a_index = forward_connector_idx,
+			connector_b_index = match_idx,
 			connection_type = forward_type
 		}
 		_graph.add_edge(edge)
@@ -567,15 +567,9 @@ func _find_unused_connector(placement: Dictionary, room_index: int) -> int:
 	var used_indices: Array[int] = []
 	for edge: Dictionary in _graph.edges:
 		if edge.room_a_index == room_index:
-			var local: Transform3D = edge.connector_a_local
-			for i: int in range(connectors.size()):
-				if connectors[i].is_equal_approx(local):
-					used_indices.append(i)
+			used_indices.append(edge.connector_a_index)
 		elif edge.room_b_index == room_index:
-			var local: Transform3D = edge.connector_b_local
-			for i: int in range(connectors.size()):
-				if connectors[i].is_equal_approx(local):
-					used_indices.append(i)
+			used_indices.append(edge.connector_b_index)
 
 	var unused_indices: Array[int] = []
 	for i: int in range(connectors.size()):
