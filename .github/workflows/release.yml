@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build plugin zip and publish release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package plugin
+        run: |
+          chmod +x scripts/package-plugin.sh
+          scripts/package-plugin.sh "${GITHUB_REF_NAME}"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Dungeon Crawler 3D ${{ github.ref_name }}"
+          body: |
+            See [CHANGELOG](./CHANGELOG.md) for details.
+          files: dist/dungeon_crawler_3d-${{ github.ref_name }}.zip
+          generate_release_notes: true
