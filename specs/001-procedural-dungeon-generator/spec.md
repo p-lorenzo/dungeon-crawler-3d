@@ -6,7 +6,7 @@
 
 **Status**: COMPLETE
 
-**Input**: User description: "costruiamo un plugin godot che permetta di generare dei dungeon procedurali a partire da una configurazione del dungeon (numero di rami, profonditá rami, lunghezza percorso principale etc.) e da varie stanze 'prefab/packedscene' create con dei connettori che permettono di connettersi ad altre stanze, il più quanto simile ma migliore e più semplice del plugin dungen giá esistente su unity"
+**Input**: User description: "costruiamo un plugin godot che permetta di generare dei dungeon procedurali a partire da una configurazione del dungeon (numero di rami, profonditá rami, lunghezza percorso principale etc.) e da varie stanze 'prefab/packedscene' create con dei connettori che permettono di connettersi ad altre stanze, il più semplice e potente possibile"
 
 ## Clarifications
 
@@ -60,7 +60,7 @@ A level designer wants control over the dungeon's structure: how many side branc
 
 A level designer wants to tweak room probabilities, connector types, and topology parameters, then instantly see the result in the Godot editor viewport — without ever pressing "Play". They generate, inspect, adjust, and regenerate in rapid cycles.
 
-**Why this priority**: Editor-only iteration dramatically accelerates level design workflows. It is a key differentiator versus Unity's DunGen which often requires entering play mode.
+**Why this priority**: Editor-only iteration dramatically accelerates level design workflows. It is a key differentiator versus other tools which often require entering play mode.
 
 **Independent Test**: Open the demo scene in the Godot editor. Change a topology parameter in the inspector. Click "Generate". Verify the 3D viewport updates with the new dungeon layout immediately, without the game running. Repeat 5 times with different parameters.
 

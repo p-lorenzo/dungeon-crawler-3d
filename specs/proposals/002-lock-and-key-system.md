@@ -1,7 +1,7 @@
 # Feature Proposal: Lock & Key Puzzle System
 
 ## 1. Overview & Goal
-In larger dungeons, players often need keys to progress through locked doors. In Unity DunGen, this is handled dynamically during post-processing. The generator identifies designated "locked" connections between rooms, assigns a lock, and then distributes key items in preceding room tiles. Crucially, DunGen guarantees that the key is placed in a room reachable *before* the player encounters the corresponding locked door, avoiding soft-locks.
+In larger dungeons, players often need keys to progress through locked doors. This is handled dynamically during post-processing: the generator identifies designated "locked" connections between rooms, assigns a lock, and then distributes key items in preceding room tiles. Crucially, the generator guarantees that the key is placed in a room reachable *before* the player encounters the corresponding locked door, avoiding soft-locks.
 
 The goal of this feature is to implement an automated **Lock & Key Puzzle System** in the Godot Dungeon Generator that places keys in reachable containers/chests and locks on doorways according to the topological layout.
 

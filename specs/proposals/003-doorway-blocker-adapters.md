@@ -1,9 +1,9 @@
 # Feature Proposal: Doorway Blocker & Prefab Adapters
 
 ## 1. Overview & Goal
-In Unity DunGen, a **Doorway** is a component that acts as a connector between room tiles. It handles visual matching dynamically:
-- If a connection is **active** (connects to another tile), DunGen spawns a door frame or open gateway.
-- If a connection is **unused** (leads to a dead-end void), DunGen spawns a "Blocker" (e.g. a solid wall, heap of rubble, or closed gate) to seal the level so the player doesn't fall into the void.
+A **Doorway** is a component that acts as a connector between room tiles. It handles visual matching dynamically:
+- If a connection is **active** (connects to another tile), the generator spawns a door frame or open gateway.
+- If a connection is **unused** (leads to a dead-end void), the generator spawns a "Blocker" (e.g. a solid wall, heap of rubble, or closed gate) to seal the level so the player doesn't fall into the void.
 
 Currently in our Godot implementation, unused room connectors are left open, creating gaping holes in the dungeon walls.
 The goal of this feature is to upgrade `RoomConnector3D` to automatically instantiate **active doors** or **blocker walls** depending on whether they are connected in the final layout.

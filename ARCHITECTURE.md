@@ -2,7 +2,7 @@
 
 ## 1. Project Overview
 
-**Dungeon Crawler 3D** is a Godot Engine plugin focused on procedural 3D dungeon generation. Inspired by tools like "DunGen" (Unity), the system dynamically assembles complex levels from predefined rooms (modules saved as `PackedScene`), joining them through compatible "connectors" or "doors".
+**Dungeon Crawler 3D** is a Godot Engine plugin focused on procedural 3D dungeon generation. The system dynamically assembles complex levels from predefined rooms (modules saved as `PackedScene`), joining them through compatible "connectors" or "doors".
 
 The goal is to provide a robust, high-performance tool natively integrated into the Godot editor, automating level design while maintaining strict control over path flow and validity.
 

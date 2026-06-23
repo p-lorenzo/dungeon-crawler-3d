@@ -24,7 +24,7 @@
 **Rationale**: `@tool` makes the script run both in-editor and at runtime. Generation is synchronous (no `await`) because it's a compute-bound operation, not I/O-bound. Editor integration requires `Engine.is_editor_hint()` guards for debug-only logic. The generated rooms are children of the generator node, appearing in the editor viewport immediately.
 
 **Alternatives considered**:
-- `EditorPlugin._handles()` with custom gizmo: Overkill for v1; the inspector button approach is simpler and matches DunGen's workflow.
+- `EditorPlugin._handles()` with custom gizmo: Overkill for v1; the inspector button approach is simpler and matches standard editor workflows.
 - Async generation via `WorkerThreadPool`: Rejected for v1 because dungeon generation is fast enough (3-5s targets) and async adds complexity with SceneTree thread-safety rules.
 
 **Key references**:
@@ -86,7 +86,7 @@
 
 **Alternatives considered**:
 - Snap-to-grid alignment: Rejected — connectors have arbitrary positions, not grid-aligned.
-- Manual alignment (designer rotates room in inspector): Rejected — violates "simpler than DunGen" goal; automation is key.
+- Manual alignment (designer rotates room in inspector): Rejected — violates the goal of automated alignment; automation is key.
 
 **Key references**:
 - Godot `Transform3D`: `Transform3D(Basis, origin)`, `Basis.looking_at()`

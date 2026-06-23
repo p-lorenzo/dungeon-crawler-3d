@@ -6,7 +6,7 @@
 
 ## Summary
 
-Build a Godot 4.6 editor plugin for procedural 3D dungeon generation. Level designers configure topology parameters (main path length, branch count, branch depth range) and assign prefab rooms to per-category pools. The generator constructs a dungeon graph in memory — matching connectors, avoiding AABB overlaps, validating path connectivity — then instantiates the result in the SceneTree. All generation runs via `@tool` scripts directly in the editor. Inspired by Unity's DunGen but simpler: exact connector matching, no tile-based approach, full in-editor iteration.
+Build a Godot 4.6 editor plugin for procedural 3D dungeon generation. Level designers configure topology parameters (main path length, branch count, branch depth range) and assign prefab rooms to per-category pools. The generator constructs a dungeon graph in memory — matching connectors, avoiding AABB overlaps, validating path connectivity — then instantiates the result in the SceneTree. All generation runs via `@tool` scripts directly in the editor. The system focuses on exact connector matching, no tile-based approach, and full in-editor iteration.
 
 ## Technical Context
 

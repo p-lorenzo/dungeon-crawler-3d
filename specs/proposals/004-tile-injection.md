@@ -1,7 +1,7 @@
 # Feature Proposal: Tile Injection System
 
 ## 1. Overview & Goal
-In procedural generation, it is often necessary to guarantee that a specific room (such as a unique boss room, a merchant shop, or an interactive quest pedestal) appears exactly once in the layout and within a specific region (e.g. "somewhere in the middle of the dungeon", or "at the very end of a branch"). In Unity DunGen, this is known as **Tile Injection**.
+In procedural generation, it is often necessary to guarantee that a specific room (such as a unique boss room, a merchant shop, or an interactive quest pedestal) appears exactly once in the layout and within a specific region (e.g. "somewhere in the middle of the dungeon", or "at the very end of a branch"). This is known as **Tile Injection**.
 
 The goal of this feature is to implement a **Tile Injection System** in Godot that allows designers to define injection rules for unique rooms, including topological constraints (such as path depth percentages or branch-only rules) and strict enforcement.
 

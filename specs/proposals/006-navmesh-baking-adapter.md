@@ -1,7 +1,7 @@
 # Feature Proposal: NavMesh Baking Adapter
 
 ## 1. Overview & Goal
-In DunGen for Unity, pathfinding is integrated by baking Unity NavMesh or A* Pathfinding Project data automatically after the dungeon is fully laid out. Since dungeons are generated dynamically at runtime or in the editor, static navmesh baking is impossible.
+For procedural dungeon layouts, pathfinding is typically integrated by baking navigation mesh data automatically after the dungeon is fully laid out. Since dungeons are generated dynamically at runtime or in the editor, static navmesh baking is impossible.
 
 In Godot, pathfinding is handled by `NavigationRegion3D` using a NavigationMesh resource. Currently, our plugin instantiates the room geometry but does not bake navigation automatically, requiring designers to manually trigger bakes.
 The goal of this feature is to implement a **Dungeon NavMesh Adapter** that detects room collisions/navigation geometry and automatically bakes the navigation mesh at runtime or editor-time immediately after dungeon generation completes.

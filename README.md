@@ -3,7 +3,7 @@
 [![Godot Engine](https://img.shields.io/badge/Godot-4.6%2B-blue?logo=godot-engine&logoColor=white)](https://godotengine.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**Dungeon Crawler 3D** is a powerful procedural 3D dungeon generator plugin for Godot Engine 4.x. Inspired by Unity's DunGen, this system dynamically assembles complex level layouts from predefined room modules (saved as `PackedScene`) joined together through compatible connector ports.
+**Dungeon Crawler 3D** is a powerful procedural 3D dungeon generator plugin for Godot Engine 4.x. This system dynamically assembles complex level layouts from predefined room modules (saved as `PackedScene`) joined together through compatible connector ports.
 
 The generation engine executes all spatial reasoning, logical bounding box collision checks, path validation, and lock-and-key distribution entirely in memory before instantiating any node in the SceneTree, ensuring high performance and softlock-free layouts.
 

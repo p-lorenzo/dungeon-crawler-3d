@@ -1,7 +1,7 @@
 # Feature Proposal: Prop Randomizer & Clamping
 
 ## 1. Overview & Goal
-In procedurally generated levels, visual and gameplay variety within individual rooms is key. In Unity DunGen, this is handled via **Prop Randomization** and the **Global Prop Component**.
+In procedurally generated levels, visual and gameplay variety within individual rooms is key. This is handled via:
 - **Prop Randomization**: Places place-holders in room tiles that select a random object to spawn from a weighted pool.
 - **Global Prop Component**: Restricts the maximum number of times a certain prop (like a treasure chest or health pickup) can spawn across the entire dungeon layout, preventing the level from being overloaded with loot.
 

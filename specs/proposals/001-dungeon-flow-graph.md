@@ -1,7 +1,7 @@
 # Feature Proposal: Dungeon Flow Graph Editor
 
 ## 1. Overview & Goal
-In Unity DunGen, dungeons are not configured via simple numeric parameters. Instead, they use a **Dungeon Flow** graph asset. This graph defines the sequential structure of the dungeon (e.g., Start Node -> Castle Area -> Transition Room -> Graveyard Area -> Boss Room) and allows designers to visually lay out branches, archetypes, and topological constraints.
+In advanced procedural generation, dungeons are often configured using a **Dungeon Flow** graph asset rather than simple numeric parameters. This graph defines the sequential structure of the dungeon (e.g., Start Node -> Castle Area -> Transition Room -> Graveyard Area -> Boss Room) and allows designers to visually lay out branches, archetypes, and topological constraints.
 
 The goal of this feature is to implement a visual, node-based **Dungeon Flow Graph Editor** in Godot using its built-in `GraphEdit` and `GraphNode` controls. This will allow level designers to visually define complex, multi-stage topologies instead of adjusting raw numbers in the Inspector.
 
