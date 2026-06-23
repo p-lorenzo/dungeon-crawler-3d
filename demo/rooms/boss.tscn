@@ -13,7 +13,7 @@ size = Vector3(8, 6, 8)
 mesh = SubResource("box_boss")
 
 [node name="EntryConnector" type="Node3D" parent="." unique_id=812898365]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -4)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, -3, -4)
 script = ExtResource("1_connector")
 connection_type = "standard_door"
 doorway_scene = ExtResource("2_doorway")

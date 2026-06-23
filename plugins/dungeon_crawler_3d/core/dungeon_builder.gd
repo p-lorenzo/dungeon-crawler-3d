@@ -565,11 +565,17 @@ func _find_unused_connector(placement: Dictionary, room_index: int) -> int:
 				if connectors[i].is_equal_approx(local):
 					used_indices.append(i)
 
+	var unused_indices: Array[int] = []
 	for i: int in range(connectors.size()):
 		if i not in used_indices and not types[i].is_empty():
-			return i
+			unused_indices.append(i)
 
-	return -1
+	if unused_indices.is_empty():
+		return -1
+
+	var rand_idx: int = _rng.randi() % unused_indices.size()
+	return unused_indices[rand_idx]
+
 
 
 func _get_connector_type(room_scene: PackedScene, connector_idx: int) -> String:

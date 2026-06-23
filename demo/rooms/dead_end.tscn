@@ -1,20 +1,20 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://bh5atuy3ncjyh"]
 
-[ext_resource type="Script" path="res://plugins/dungeon_crawler_3d/nodes/room_connector_3d.gd" id="1_connector"]
-[ext_resource type="PackedScene" path="res://demo/doorway.tscn" id="2_doorway"]
-[ext_resource type="PackedScene" path="res://demo/blocker.tscn" id="3_blocker"]
+[ext_resource type="Script" uid="uid://dq43clq5i5hbo" path="res://plugins/dungeon_crawler_3d/nodes/room_connector_3d.gd" id="1_connector"]
+[ext_resource type="PackedScene" uid="uid://ddoorway123" path="res://demo/doorway.tscn" id="2_doorway"]
+[ext_resource type="PackedScene" uid="uid://dblocker123" path="res://demo/blocker.tscn" id="3_blocker"]
 
 [sub_resource type="BoxMesh" id="box_deadend"]
 size = Vector3(3, 3, 3)
 
-[node name="DeadEndRoom" type="Node3D"]
+[node name="DeadEndRoom" type="Node3D" unique_id=898145102]
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1456583741]
 mesh = SubResource("box_deadend")
 
-[node name="EntryConnector" type="Node3D" parent="."]
+[node name="EntryConnector" type="Node3D" parent="." unique_id=1237082136]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, -1.5, -1.5)
 script = ExtResource("1_connector")
 connection_type = "standard_door"
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -1.5)
 doorway_scene = ExtResource("2_doorway")
 blocker_scene = ExtResource("3_blocker")
