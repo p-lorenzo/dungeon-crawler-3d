@@ -23,13 +23,26 @@ extends Node3D
 @export var doorway_scene: PackedScene
 @export var blocker_scene: PackedScene
 
+@export var aperture_width: float = 2.0:
+	set(value):
+		aperture_width = maxf(0.1, value)
+		if Engine.is_editor_hint():
+			update_gizmos()
+
+@export var aperture_height: float = 2.5:
+	set(value):
+		aperture_height = maxf(0.1, value)
+		if Engine.is_editor_hint():
+			update_gizmos()
+
+
 
 func _get_gizmo_color() -> Color:
 	if is_locked:
 		return Color.MAGENTA
 	match connection_type:
 		"":
-			return Color.GRAY
+			return Color.YELLOW
 		"standard_door":
 			return Color.SKY_BLUE
 		"large_gate":
