@@ -18,6 +18,8 @@ var branches_placed: int = 0
 var branches_requested: int = 0
 var _active_injection_rules: Array[TileInjectionRule] = []
 var _placed_injection_rules: Array[TileInjectionRule] = []
+var _total_placement_attempts: int = 0
+const MAX_TOTAL_PLACEMENT_ATTEMPTS: int = 10000
 
 
 
@@ -33,6 +35,7 @@ func build(config: DungeonConfig) -> DungeonGraph:
 	_branched_from.clear()
 	failure_reason = ""
 	partial_success_note = ""
+	_total_placement_attempts = 0
 	branches_placed = 0
 	branches_requested = 0
 	_active_injection_rules.clear()
@@ -189,6 +192,11 @@ func _build_main_path() -> bool:
 
 
 func _place_path_node_recursive(depth: int) -> bool:
+	_total_placement_attempts += 1
+	if _total_placement_attempts > MAX_TOTAL_PLACEMENT_ATTEMPTS:
+		failure_reason = "Exceeded maximum total placement attempts limit (%d)" % MAX_TOTAL_PLACEMENT_ATTEMPTS
+		return false
+
 	var target_length: int = _config.main_path_length
 	if depth >= target_length:
 		return true
@@ -392,6 +400,10 @@ func _build_single_branch(attach_index: int, depth: int) -> bool:
 
 
 func _place_branch_node_recursive(current_parent_idx: int, branch_placement_indices: Array[int], step: int, depth: int) -> bool:
+	_total_placement_attempts += 1
+	if _total_placement_attempts > MAX_TOTAL_PLACEMENT_ATTEMPTS:
+		return false
+
 	if step >= depth:
 		return true
 
