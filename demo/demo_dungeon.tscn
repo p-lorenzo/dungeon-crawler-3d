@@ -2,7 +2,181 @@
 
 [ext_resource type="Script" uid="uid://cime2ajh1h35e" path="res://plugins/dungeon_crawler_3d/nodes/dungeon_generator_3d.gd" id="1_script"]
 [ext_resource type="Resource" uid="uid://btmt6rrghuiwt" path="res://demo/demo_config.tres" id="2_config"]
+[ext_resource type="PackedScene" uid="uid://btp4yw1nhrc7d" path="res://demo/rooms/entrance.tscn" id="3_edu5r"]
+[ext_resource type="PackedScene" uid="uid://dpq1duwy5o8ed" path="res://demo/rooms/junction.tscn" id="4_dgp78"]
+[ext_resource type="PackedScene" uid="uid://vtudi3co3y5b" path="res://demo/rooms/corridor.tscn" id="5_1bphm"]
+[ext_resource type="PackedScene" uid="uid://bis2t3rtkglrq" path="res://demo/rooms/boss.tscn" id="6_p7d4h"]
+[ext_resource type="PackedScene" uid="uid://bh5atuy3ncjyh" path="res://demo/rooms/dead_end.tscn" id="7_dgp78"]
 
 [node name="DungeonGenerator" type="Node3D" unique_id=12323142]
 script = ExtResource("1_script")
 config = ExtResource("2_config")
+
+[node name="DungeonLayout" type="Node3D" parent="." unique_id=212171282]
+
+[node name="Entrance_0" type="Node3D" parent="DungeonLayout" unique_id=1090471963 instance=ExtResource("3_edu5r")]
+
+[node name="Junction_1" type="Node3D" parent="DungeonLayout" unique_id=105809202 instance=ExtResource("4_dgp78")]
+transform = Transform3D(1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, 1, 2.6226832e-07, 0, 5.5)
+
+[node name="Junction_2" type="Node3D" parent="DungeonLayout" unique_id=462404474 instance=ExtResource("4_dgp78")]
+transform = Transform3D(-1.7484555e-07, 0, 1, 0, 1, 0, -1, 0, -1.7484555e-07, 6, 0, 5.499999)
+
+[node name="Corridor_3" type="Node3D" parent="DungeonLayout" unique_id=830881522 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-2.6226832e-07, 0, 1, 0, 1, 0, -1, 0, -2.6226832e-07, 13, 0, 5.4999976)
+
+[node name="Junction_4" type="Node3D" parent="DungeonLayout" unique_id=1015201255 instance=ExtResource("4_dgp78")]
+transform = Transform3D(-3.496911e-07, 0, 1, 0, 1, 0, -1, 0, -3.496911e-07, 20, 0, 5.4999957)
+
+[node name="Corridor_5" type="Node3D" parent="DungeonLayout" unique_id=1309363916 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-1, 0, -4.371139e-07, 0, 1, 0, 4.371139e-07, 0, -1, 19.999996, 0, -1.5000043)
+
+[node name="Junction_6" type="Node3D" parent="DungeonLayout" unique_id=1499147875 instance=ExtResource("4_dgp78")]
+transform = Transform3D(-1, 0, -5.245367e-07, 0, 1, 0, 5.245367e-07, 0, -1, 19.999992, 0, -8.500004)
+
+[node name="Junction_7" type="Node3D" parent="DungeonLayout" unique_id=1522305013 instance=ExtResource("4_dgp78")]
+transform = Transform3D(6.119595e-07, 0, -1, 0, 1, 0, 1, 0, 6.119595e-07, 13.999992, 0, -8.5)
+
+[node name="Corridor_8" type="Node3D" parent="DungeonLayout" unique_id=976639188 instance=ExtResource("5_1bphm")]
+transform = Transform3D(6.9938227e-07, 0, -1, 0, 1, 0, 1, 0, 6.9938227e-07, 6.9999924, 0, -8.499995)
+
+[node name="Corridor_9" type="Node3D" parent="DungeonLayout" unique_id=1849167000 instance=ExtResource("5_1bphm")]
+transform = Transform3D(7.8680506e-07, 0, -1, 0, 1, 0, 1, 0, 7.8680506e-07, -1.0000076, 0, -8.4999895)
+
+[node name="Corridor_10" type="Node3D" parent="DungeonLayout" unique_id=1762008005 instance=ExtResource("5_1bphm")]
+transform = Transform3D(8.7422785e-07, 0, -1, 0, 1, 0, 1, 0, 8.7422785e-07, -9.000008, 0, -8.499983)
+
+[node name="Junction_11" type="Node3D" parent="DungeonLayout" unique_id=1341316040 instance=ExtResource("4_dgp78")]
+transform = Transform3D(9.616506e-07, 0, -1, 0, 1, 0, 1, 0, 9.616506e-07, -16.000008, 0, -8.499976)
+
+[node name="Junction_12" type="Node3D" parent="DungeonLayout" unique_id=1531694658 instance=ExtResource("4_dgp78")]
+transform = Transform3D(1, 0, 1.0490734e-06, 0, 1, 0, -1.0490734e-06, 0, 1, -16, 0, -2.4999762)
+
+[node name="Corridor_13" type="Node3D" parent="DungeonLayout" unique_id=493127225 instance=ExtResource("5_1bphm")]
+transform = Transform3D(1, 0, 1.1364962e-06, 0, 1, 0, -1.1364962e-06, 0, 1, -15.999992, 0, 4.500024)
+
+[node name="Corridor_14" type="Node3D" parent="DungeonLayout" unique_id=1663671173 instance=ExtResource("5_1bphm")]
+transform = Transform3D(1, 0, 1.223919e-06, 0, 1, 0, -1.223919e-06, 0, 1, -15.999983, 0, 12.500024)
+
+[node name="Junction_15" type="Node3D" parent="DungeonLayout" unique_id=180727504 instance=ExtResource("4_dgp78")]
+transform = Transform3D(1, 0, 1.3113417e-06, 0, 1, 0, -1.3113417e-06, 0, 1, -15.999974, 0, 19.500023)
+
+[node name="Corridor_16" type="Node3D" parent="DungeonLayout" unique_id=1364825974 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-1.3987645e-06, 0, 1, 0, 1, 0, -1, 0, -1.3987645e-06, -8.999974, 0, 19.500013)
+
+[node name="Corridor_17" type="Node3D" parent="DungeonLayout" unique_id=792676782 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-1.4861873e-06, 0, 1, 0, 1, 0, -1, 0, -1.4861873e-06, -0.99997425, 0, 19.500002)
+
+[node name="Corridor_18" type="Node3D" parent="DungeonLayout" unique_id=277893547 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-1.5736101e-06, 0, 1, 0, 1, 0, -1, 0, -1.5736101e-06, 7.0000257, 0, 19.49999)
+
+[node name="Corridor_19" type="Node3D" parent="DungeonLayout" unique_id=1886559466 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-1.6610329e-06, 0, 1, 0, 1, 0, -1, 0, -1.6610329e-06, 15.000026, 0, 19.499979)
+
+[node name="Corridor_20" type="Node3D" parent="DungeonLayout" unique_id=1285119464 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-1.7484557e-06, 0, 1, 0, 1, 0, -1, 0, -1.7484557e-06, 23.000027, 0, 19.499966)
+
+[node name="Corridor_21" type="Node3D" parent="DungeonLayout" unique_id=1986907268 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-1.8358785e-06, 0, 1, 0, 1, 0, -1, 0, -1.8358785e-06, 31.000027, 0, 19.49995)
+
+[node name="Junction_22" type="Node3D" parent="DungeonLayout" unique_id=1519204860 instance=ExtResource("4_dgp78")]
+transform = Transform3D(-1.9233012e-06, 0, 1, 0, 1, 0, -1, 0, -1.9233012e-06, 38.000027, 0, 19.499937)
+
+[node name="Junction_23" type="Node3D" parent="DungeonLayout" unique_id=1366586556 instance=ExtResource("4_dgp78")]
+transform = Transform3D(-2.0107238e-06, 0, 1, 0, 1, 0, -1, 0, -2.0107238e-06, 44.000027, 0, 19.499926)
+
+[node name="Junction_24" type="Node3D" parent="DungeonLayout" unique_id=16298429 instance=ExtResource("4_dgp78")]
+transform = Transform3D(-2.0981465e-06, 0, 1, 0, 1, 0, -1, 0, -2.0981465e-06, 50.000027, 0, 19.499914)
+
+[node name="Junction_25" type="Node3D" parent="DungeonLayout" unique_id=1766372206 instance=ExtResource("4_dgp78")]
+transform = Transform3D(-1, 0, -2.1855692e-06, 0, 1, 0, 2.1855692e-06, 0, -1, 50.00001, 0, 13.499914)
+
+[node name="Corridor_26" type="Node3D" parent="DungeonLayout" unique_id=1649663054 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-1, 0, -2.2729919e-06, 0, 1, 0, 2.2729919e-06, 0, -1, 49.999996, 0, 6.499914)
+
+[node name="Corridor_27" type="Node3D" parent="DungeonLayout" unique_id=401313699 instance=ExtResource("5_1bphm")]
+transform = Transform3D(-1, 0, -2.3604146e-06, 0, 1, 0, 2.3604146e-06, 0, -1, 49.99998, 0, -1.5000858)
+
+[node name="Junction_28" type="Node3D" parent="DungeonLayout" unique_id=425456570 instance=ExtResource("4_dgp78")]
+transform = Transform3D(-1, 0, -2.4478372e-06, 0, 1, 0, 2.4478372e-06, 0, -1, 49.999966, 0, -8.500086)
+
+[node name="Corridor_29" type="Node3D" parent="DungeonLayout" unique_id=1205875899 instance=ExtResource("5_1bphm")]
+transform = Transform3D(2.53526e-06, 0, -1, 0, 1, 0, 1, 0, 2.53526e-06, 42.999966, 0, -8.500068)
+
+[node name="Junction_30" type="Node3D" parent="DungeonLayout" unique_id=1326638350 instance=ExtResource("4_dgp78")]
+transform = Transform3D(2.6226826e-06, 0, -1, 0, 1, 0, 1, 0, 2.6226826e-06, 35.999966, 0, -8.50005)
+
+[node name="Junction_31" type="Node3D" parent="DungeonLayout" unique_id=1976742714 instance=ExtResource("4_dgp78")]
+transform = Transform3D(2.7101053e-06, 0, -1, 0, 1, 0, 1, 0, 2.7101053e-06, 29.999966, 0, -8.500033)
+
+[node name="Corridor_32" type="Node3D" parent="DungeonLayout" unique_id=1163889918 instance=ExtResource("5_1bphm")]
+transform = Transform3D(1, 0, 2.797528e-06, 0, 1, 0, -2.797528e-06, 0, 1, 29.999985, 0, -1.5000334)
+
+[node name="Junction_33" type="Node3D" parent="DungeonLayout" unique_id=284661359 instance=ExtResource("4_dgp78")]
+transform = Transform3D(1, 0, 2.8849506e-06, 0, 1, 0, -2.8849506e-06, 0, 1, 30.000006, 0, 5.4999666)
+
+[node name="Boss_34" type="Node3D" parent="DungeonLayout" unique_id=1682461122 instance=ExtResource("6_p7d4h")]
+transform = Transform3D(-2.9723733e-06, 0, 1, 0, 1, 0, -1, 0, -2.9723733e-06, 37.000008, 1, 5.499946)
+
+[node name="Junction_35" type="Node3D" parent="DungeonLayout" unique_id=1533533955 instance=ExtResource("4_dgp78")]
+transform = Transform3D(1.0490734e-06, 0, -1, 0, 1, 0, 1, 0, 1.0490734e-06, -22.000008, 0, -8.49997)
+
+[node name="Corridor_36" type="Node3D" parent="DungeonLayout" unique_id=1444073873 instance=ExtResource("5_1bphm")]
+transform = Transform3D(1, 0, 1.1364962e-06, 0, 1, 0, -1.1364962e-06, 0, 1, -22, 0, -1.4999704)
+
+[node name="Junction_37" type="Node3D" parent="DungeonLayout" unique_id=1915495591 instance=ExtResource("4_dgp78")]
+transform = Transform3D(1, 0, 1.223919e-06, 0, 1, 0, -1.223919e-06, 0, 1, -21.999992, 0, 5.5000296)
+
+[node name="Corridor_38" type="Node3D" parent="DungeonLayout" unique_id=124726228 instance=ExtResource("5_1bphm")]
+transform = Transform3D(1, 0, 1.3113417e-06, 0, 1, 0, -1.3113417e-06, 0, 1, -21.999983, 0, 12.50003)
+
+[node name="Corridor_39" type="Node3D" parent="DungeonLayout" unique_id=1703651061 instance=ExtResource("5_1bphm")]
+transform = Transform3D(1, 0, 1.3987645e-06, 0, 1, 0, -1.3987645e-06, 0, 1, -21.999971, 0, 20.50003)
+
+[node name="Corridor_40" type="Node3D" parent="DungeonLayout" unique_id=76960962 instance=ExtResource("5_1bphm")]
+transform = Transform3D(1, 0, 1.4861873e-06, 0, 1, 0, -1.4861873e-06, 0, 1, -21.99996, 0, 28.50003)
+
+[node name="Corridor_41" type="Node3D" parent="DungeonLayout" unique_id=143514649 instance=ExtResource("5_1bphm")]
+transform = Transform3D(1, 0, 1.5736101e-06, 0, 1, 0, -1.5736101e-06, 0, 1, -21.999949, 0, 36.50003)
+
+[node name="Junction_42" type="Node3D" parent="DungeonLayout" unique_id=1103425477 instance=ExtResource("4_dgp78")]
+transform = Transform3D(1, 0, 1.6610329e-06, 0, 1, 0, -1.6610329e-06, 0, 1, -21.999937, 0, 43.50003)
+
+[node name="DeadEnd_43" type="Node3D" parent="DungeonLayout" unique_id=898145102 instance=ExtResource("7_dgp78")]
+transform = Transform3D(1, 0, 1.7484557e-06, 0, 1, 0, -1.7484557e-06, 0, 1, -21.99993, -0.5, 48.00003)
+
+[node name="Junction_44" type="Node3D" parent="DungeonLayout" unique_id=1225220830 instance=ExtResource("4_dgp78")]
+transform = Transform3D(-1, 0, -6.119595e-07, 0, 1, 0, 6.119595e-07, 0, -1, 19.999989, 0, -14.500004)
+
+[node name="Corridor_45" type="Node3D" parent="DungeonLayout" unique_id=95340080 instance=ExtResource("5_1bphm")]
+transform = Transform3D(6.9938227e-07, 0, -1, 0, 1, 0, 1, 0, 6.9938227e-07, 12.999989, 0, -14.499999)
+
+[node name="Corridor_46" type="Node3D" parent="DungeonLayout" unique_id=1475630149 instance=ExtResource("5_1bphm")]
+transform = Transform3D(7.8680506e-07, 0, -1, 0, 1, 0, 1, 0, 7.8680506e-07, 4.9999886, 0, -14.499993)
+
+[node name="DeadEnd_47" type="Node3D" parent="DungeonLayout" unique_id=1716905228 instance=ExtResource("7_dgp78")]
+transform = Transform3D(8.7422785e-07, 0, -1, 0, 1, 0, 1, 0, 8.7422785e-07, -0.50001144, -0.5, -14.4999895)
+
+[node name="Corridor_48" type="Node3D" parent="DungeonLayout" unique_id=1284014827 instance=ExtResource("5_1bphm")]
+transform = Transform3D(2.2729919e-06, 0, -1, 0, 1, 0, 1, 0, 2.2729919e-06, 43.00001, 0, 13.49993)
+
+[node name="Corridor_49" type="Node3D" parent="DungeonLayout" unique_id=1984146927 instance=ExtResource("5_1bphm")]
+transform = Transform3D(2.3604146e-06, 0, -1, 0, 1, 0, 1, 0, 2.3604146e-06, 35.00001, 0, 13.499949)
+
+[node name="Corridor_50" type="Node3D" parent="DungeonLayout" unique_id=523173333 instance=ExtResource("5_1bphm")]
+transform = Transform3D(2.4478372e-06, 0, -1, 0, 1, 0, 1, 0, 2.4478372e-06, 27.000011, 0, 13.499969)
+
+[node name="Junction_51" type="Node3D" parent="DungeonLayout" unique_id=811011524 instance=ExtResource("4_dgp78")]
+transform = Transform3D(2.53526e-06, 0, -1, 0, 1, 0, 1, 0, 2.53526e-06, 20.000011, 0, 13.499986)
+
+[node name="Junction_52" type="Node3D" parent="DungeonLayout" unique_id=4366204 instance=ExtResource("4_dgp78")]
+transform = Transform3D(2.6226826e-06, 0, -1, 0, 1, 0, 1, 0, 2.6226826e-06, 14.000011, 0, 13.500001)
+
+[node name="Corridor_53" type="Node3D" parent="DungeonLayout" unique_id=978306476 instance=ExtResource("5_1bphm")]
+transform = Transform3D(2.7101053e-06, 0, -1, 0, 1, 0, 1, 0, 2.7101053e-06, 7.0000114, 0, 13.500019)
+
+[node name="Corridor_54" type="Node3D" parent="DungeonLayout" unique_id=1014846087 instance=ExtResource("5_1bphm")]
+transform = Transform3D(2.797528e-06, 0, -1, 0, 1, 0, 1, 0, 2.797528e-06, -0.99998856, 0, 13.500041)
+
+[node name="DeadEnd_55" type="Node3D" parent="DungeonLayout" unique_id=735684679 instance=ExtResource("7_dgp78")]
+transform = Transform3D(2.8849506e-06, 0, -1, 0, 1, 0, 1, 0, 2.8849506e-06, -6.4999886, -0.5, 13.500057)

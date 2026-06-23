@@ -11,8 +11,11 @@
 
 [resource]
 script = ExtResource("1_script")
-main_path_length = 15
-branch_count = 0
+main_path_length = 35
+branch_count = 3
+branch_depth_min = 4
+branch_depth_max = 10
+room_count_max = 150
 random_seed = 12345
 entrance_pool = Array[ExtResource("1_ru1tv")]([ExtResource("2_entrance")])
 boss_pool = Array[ExtResource("1_ru1tv")]([ExtResource("3_boss")])
