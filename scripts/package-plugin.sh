@@ -19,6 +19,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PLUGIN_DIR="addons/dungeon_crawler_3d"
+PLUGIN_LICENSE="${PLUGIN_DIR}/LICENSE"
 
 # --- Version label -----------------------------------------------------------
 
@@ -29,6 +30,11 @@ OUTDIR="${ROOT_DIR}/dist"
 OUTFILE="${OUTDIR}/${BASENAME}.zip"
 
 mkdir -p "$OUTDIR"
+
+if [[ ! -f "${ROOT_DIR}/${PLUGIN_LICENSE}" ]]; then
+    echo "❌ Missing ${PLUGIN_LICENSE}; the Godot Asset Store package must include a license file inside the addon folder."
+    exit 1
+fi
 
 # --- Detect archive tool -----------------------------------------------------
 
